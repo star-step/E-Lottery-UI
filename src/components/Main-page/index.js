@@ -9,8 +9,9 @@ export default function MainPage() {
   };
     return (
       <div className="row">
-        <LotteryView price="10" calcTotal={calcTotal} total={total}/>
-        <LotteryView price="30" calcTotal={calcTotal} total={total}/>
+        <LotteryView price="10" name="TypeA" calcTotal={calcTotal} total={total}/>
+        <LotteryView price="30" name="TypeB" calcTotal={calcTotal} total={total}/>
+        <LotteryView price="60" name="TypeC" calcTotal={calcTotal} total={total}/>
         <p>Total : {total}</p>
       </div>
     );

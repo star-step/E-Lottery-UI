@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function LotteryView({price, calcTotal, total}) {
+export default function LotteryView({price, name, calcTotal, total}) {
   
     const [count, setCount] = useState(0);
     return (
@@ -17,8 +17,8 @@ export default function LotteryView({price, calcTotal, total}) {
           </button>
         </div>
         <div className="col-10">
-          <p>total number of type A tickets : {count}</p>
-          <p>total price of type A lottery : {count*price}</p>
+          <p>total number of {name} tickets : {count}</p>
+          <p>total price of {name} lottery : {count*price}</p>
         </div>
         <div className="col-1">
           <button onClick={() => {
