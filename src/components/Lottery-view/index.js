@@ -20,6 +20,7 @@ export default function LotteryView({price, name, calcTotal, total}) {
           <p>total number of {name} tickets : {count}</p>
           <p>total price of {name} lottery : {count*price}</p>
         </div>
+        <br/>
         <div className="col-1">
           <button onClick={() => {
             setCount(count + 1)

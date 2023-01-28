@@ -8,11 +8,13 @@ export default function MainPage() {
     setTotal(tot);
   };
     return (
-      <div className="row">
-        <LotteryView price="10" name="TypeA" calcTotal={calcTotal} total={total}/>
-        <LotteryView price="30" name="TypeB" calcTotal={calcTotal} total={total}/>
-        <LotteryView price="60" name="TypeC" calcTotal={calcTotal} total={total}/>
-        <p>Total : {total}</p>
+      <div className="container d-flex justify-content-center">
+        <div className="col-6">
+          <LotteryView price="10" name="TypeA" calcTotal={calcTotal} total={total}/>
+          <LotteryView price="30" name="TypeB" calcTotal={calcTotal} total={total}/>
+          <LotteryView price="60" name="TypeC" calcTotal={calcTotal} total={total}/>
+          <p>Total : {total}</p>   
+        </div>
       </div>
     );
 }
