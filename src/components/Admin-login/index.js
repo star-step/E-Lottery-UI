@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { useNavigate } from "react-router-dom";
 
-export default function Login({setUserLogged, userLogged}) {
+export default function AdminLogin({ setAdminLogged, adminLogged }) {
 
   let navigate = useNavigate(); 
-  console.log(userLogged);
   const emailRef = useRef();
   const passwordRef = useRef();
   const siginInRef = useRef();
-  const { loginUser, checkLoggedIn } = useAuth();
+  const { loginAdmin } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useNavigate();
@@ -32,12 +31,12 @@ export default function Login({setUserLogged, userLogged}) {
     }
     try {
       setLoading(true);
-      await loginUser(email, password);
-      setUserLogged(true)
-      navigate("/main");
+      await loginAdmin(email, password);
+      setAdminLogged(true)
+      navigate("/admin-pn");
     } catch {
       setError("Failed to log in");
-      setUserLogged(false)
+      setAdminLogged(false)
     }
 
     setLoading(false);

@@ -38,6 +38,36 @@ export function AuthProvider({ children }) {
       })
       .catch(function (json) {});
   };
+  
+  const loginAdmin = async (email, password) => {
+    let user = {
+      email: email,
+      password: password,
+    };
+    fetch(apiUrl + "admin/login", {
+      method: "post",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          return response.json().then((json) => {
+            throw new Error(json.message);
+          });
+        }
+      })
+      .then(function (data) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("tickets_bought", data.ticketsBought)
+        // getAllUsers(data.loggedUser);
+        // storeProfileInfo("./chat", data.loggedUser, true);
+      })
+      .catch(function (json) {});
+  };
 
   function signup(name, email, password) {
     let user = {
@@ -80,20 +110,17 @@ export function AuthProvider({ children }) {
     }
   }
 
-  function checkLogin(redirect) {
+  function checkLogin() {
     if (localStorage.getItem("token") != null) {
       return true;
     } else {
-      if (redirect) {
-        window.location.href = "./login";
-      }
       return false;
     }
   }
 
   function checkLoggedIn() {
     if (checkLogin(false)) {
-      window.location.href = "./chat";
+      window.location.href = "./main";
     }
   }
 
@@ -119,11 +146,13 @@ export function AuthProvider({ children }) {
     loginUser,
     signup,
     logout,
+    checkLogin,
     // resetPassword,
     // updateEmail,
     // updatePassword,
     checkLoggedIn,
     storeProfileInfo,
+    loginAdmin
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;

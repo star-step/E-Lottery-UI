@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { useNavigate } from "react-router-dom";
 
-export default function Register() {
+export default function Register({setUserLogged, userLogged}) {
 
   const nameRef = useRef();
   const emailRef = useRef();
-  const roleRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const { signup } = useAuth();
@@ -29,17 +28,14 @@ export default function Register() {
         emailRef.current.value,
         passwordRef.current.value,
       );
+      setUserLogged(true)
       navigate("/main");
     } catch {
       setError("Failed to create an account");
+      setUserLogged(false)
     }
 
     setLoading(false);
-  }
-
-  const routeChange = () =>{ 
-    // let path = `main`; 
-    // navigate(path);
   }
 
   return (

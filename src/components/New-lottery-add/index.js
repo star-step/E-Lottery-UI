@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { useNavigate } from "react-router-dom";
 
-export default function Login({setUserLogged, userLogged}) {
+export default function AddLottery() {
 
   let navigate = useNavigate(); 
   console.log(userLogged);
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const nameRef = useRef();
+  const stateRef = useRef();
   const siginInRef = useRef();
   const { loginUser, checkLoggedIn } = useAuth();
   const [error, setError] = useState("");
@@ -18,21 +18,21 @@ export default function Login({setUserLogged, userLogged}) {
     e && e.preventDefault();
     setError("");
 
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
+    const name = nameRef.current.value;
+    const state = stateRef.current.value;
 
-    if (!email) {
+    if (!name) {
       setError("Email is not provided");
       return;
     }
 
-    if (!password) {
+    if (!state) {
       setError("Password is not provided");
       return;
     }
     try {
       setLoading(true);
-      await loginUser(email, password);
+      await loginUser(name, state);
       setUserLogged(true)
       navigate("/main");
     } catch {
@@ -48,28 +48,28 @@ export default function Login({setUserLogged, userLogged}) {
     const handleKeypress = (e) => {
       if (e.key === "Enter") {
         const activeEle = document.activeElement;
-        const emailEle = emailRef.current;
-        const passwordEle = passwordRef.current;
+        const nameEle = nameRef.current;
+        const stateEle = stateRef.current;
 
-        const email = emailEle.value;
-        const password = passwordEle.value;
+        const name = nameEle.value;
+        const state = stateEle.value;
 
         //if both are empty return
-        if (!(password || email)) {
+        if (!(state || name)) {
           return;
         }
-        //if email is selected and password is empty
-        if (activeEle === emailEle && !password) {
-          passwordEle.focus();
+        //if name is selected and state is empty
+        if (activeEle === nameEle && !state) {
+          stateEle.focus();
           return;
         }
-        //if passeord is selected and email is empty
-        if (activeEle === passwordEle && !email) {
-          emailEle.focus();
+        //if passeord is selected and name is empty
+        if (activeEle === stateEle && !name) {
+          nameEle.focus();
           return;
         }
         //if any one is empty
-        if (!(password && email)) {
+        if (!(state && name)) {
           return;
         }
 
@@ -88,30 +88,34 @@ export default function Login({setUserLogged, userLogged}) {
       <form className="col-4">
         {error && <div className="alert alert-danger">{error}</div>}
         <div className="mb-3">
-          <label htmlFor="exampleInputEmail1" className="form-label">
-            Email address
+          <label htmlFor="lotteryName" className="form-label">
+            Lottery Name
           </label>
           <input
-            type="email"
+            type="text"
             className="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            ref={emailRef}
+            id="lotteryName"
+            aria-describedby="LotteryName"
+            ref={nameRef}
           />
-          <div id="emailHelp" className="form-text">
-            We'll never share your email with anyone else.
+          <div id="LotteryName" className="form-text">
+            Enter Lottery Name
           </div>
         </div>
         <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">
-            Password
+          <label htmlFor="lotteryState" className="form-label">
+            State
           </label>
           <input
-            type="password"
+            type="text"
             className="form-control"
-            id="exampleInputPassword1"
-            ref={passwordRef}
+            id="lotteryState"
+            aria-describedby="LotteryState"
+            ref={stateRef}
           />
+          <div id="LotteryState" className="form-text">
+            Lottery State
+          </div>
         </div>
         {/* <div className="mb-3 form-check">
           <input type="checkbox" className="form-check-input" id="exampleCheck1" />
