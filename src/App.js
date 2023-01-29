@@ -1,8 +1,8 @@
-import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./components/Main-page";
 import Login from "./components/Login-modal";
 import Register from "./components/Register-modal";
+import { AuthProvider } from "./contexts/Auth";
 import './App.css';
 
 function App() {
@@ -15,12 +15,14 @@ function App() {
     //   </header>
     // </div>
     <BrowserRouter>
-    <Routes>
-      <Route path="/login" element={<Login />}/>
-      <Route index element={<Login />} />
-      <Route path="/register" element={<Register />}/>
-      <Route path="/main" element={<MainPage />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/login" element={<Login />}/>
+        <Route index element={<MainPage />} />
+        <Route path="/register" element={<Register />}/>
+        <Route path="/main" element={<MainPage />} />
+      </Routes>
+    </AuthProvider>
   </BrowserRouter>
   );
 }
