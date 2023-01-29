@@ -24,7 +24,6 @@ export default function Register() {
     try {
       // setError("");
       // setLoading(true);
-      console.log("try");
       await signup(
         nameRef.current.value,
         emailRef.current.value,

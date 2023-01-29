@@ -52,8 +52,23 @@ export function AuthProvider({ children }) {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        return response.json().then((json) => {
+          throw new Error(json.message);
+        });
+      }
+    })
+    .then(function (data) {
+      console.log(data);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("tickets_bought", data.ticketsBought)
+      // getAllUsers(data.loggedUser);
+      // storeProfileInfo("./chat", data.loggedUser, true);
+    })
+    .catch(function (json) {});
   }
 
   function storeProfileInfo(url, user, redirect) {
