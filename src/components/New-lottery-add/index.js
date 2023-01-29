@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { useNavigate } from "react-router-dom";
 
+const apiUrl = "http://localhost:5000/";
 export default function AddLottery() {
 
   let navigate = useNavigate(); 
-  console.log(userLogged);
   const nameRef = useRef();
   const stateRef = useRef();
   const siginInRef = useRef();
@@ -13,6 +13,38 @@ export default function AddLottery() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useNavigate();
+  
+  function createLottery(name, state) {
+    let lottery = {
+      name: name,
+      state: state
+    };
+    return fetch(apiUrl + "lottery/createLottery", {
+      method: "POST",
+      body: JSON.stringify(lottery),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      } else {
+        return response.json().then((json) => {
+          throw new Error(json.message);
+        });
+      }
+    })
+    .then(function (data) {
+      console.log(data);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("tickets_bought", data.ticketsBought)
+      // getAllUsers(data.loggedUser);
+      // storeProfileInfo("./chat", data.loggedUser, true);
+    })
+    .catch(function (json) {});
+  }
+
 
   const handleSubmit = async (e) => {
     e && e.preventDefault();
@@ -32,12 +64,12 @@ export default function AddLottery() {
     }
     try {
       setLoading(true);
-      await loginUser(name, state);
-      setUserLogged(true)
+      await createLottery(name, state);
+      // setUserLogged(true)
       navigate("/main");
     } catch {
       setError("Failed to log in");
-      setUserLogged(false)
+      // setUserLogged(false)
     }
 
     setLoading(false);
