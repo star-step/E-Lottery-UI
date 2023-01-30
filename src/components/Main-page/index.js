@@ -6,6 +6,8 @@ export default function MainPage({setUserLogged, userLogged}) {
   
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [lotterySelected, setLotterySelected] = useState(true);
+
   // const [activeLotteries, setActiveLotteries] = useState([]);
   let activeLotteries = JSON.parse(localStorage.getItem("active_lotteries"))
 
@@ -48,6 +50,12 @@ export default function MainPage({setUserLogged, userLogged}) {
   const calcTotal = (tot) => {
     setTotal(tot);
   };
+  
+  const checkOut = () => {
+    if(total == 0){
+      setLotterySelected(false)
+    }
+  };
     return (
       <div className="container d-flex justify-content-center">
         <div className="row">
@@ -75,6 +83,10 @@ export default function MainPage({setUserLogged, userLogged}) {
                 })
             }
             <p>Total : {total}</p> 
+            <button onClick={checkOut}>Proceed to Checkout</button>
+            {
+            lotterySelected ? (<p></p>) : (<p>Select lottery first</p>)
+            }
           </div>
         </div>
       </div>
