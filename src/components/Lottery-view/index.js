@@ -1,7 +1,22 @@
 import React, { useState } from "react";
+import ShortUniqueId from 'https://esm.sh/short-unique-id';
 
 export default function LotteryView({price, name, calcTotal, total}) {
   
+  const [tickets, setTickets] = useState([]);
+
+const generateTicket = () =>{
+  const uid = new ShortUniqueId();
+  console.log(uid());
+  let ticket = {
+    lottery_id : name,
+    ticket_id : uid(),
+    user_id : "user1"
+  }
+  setTickets([...tickets, ticket])
+  console.log(tickets);
+}
+// Random UUID
     const [count, setCount] = useState(0);
     return (
       <div className="row">
@@ -25,6 +40,7 @@ export default function LotteryView({price, name, calcTotal, total}) {
           <button onClick={() => {
             setCount(count + 1)
             calcTotal(parseInt(total) + parseInt(price))
+            generateTicket()
           }
             }>
               +

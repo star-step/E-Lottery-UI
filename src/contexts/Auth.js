@@ -33,6 +33,7 @@ export function AuthProvider({ children }) {
       .then(function (data) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("tickets_bought", data.ticketsBought)
+        localStorage.setItem("user_id", data.userId)
         // getAllUsers(data.loggedUser);
         // storeProfileInfo("./chat", data.loggedUser, true);
       })
