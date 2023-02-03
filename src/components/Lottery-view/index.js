@@ -5,7 +5,6 @@ export default function LotteryView({price, id, name, calcTotal, total, setLotte
   
 // Random UUID
   const [count, setCount] = useState(0);
-  const [tickets, setTickets] = useState([]);
 
 const generateTicket = () =>{
   const uid = new ShortUniqueId();
@@ -23,7 +22,7 @@ const removeTicket = () =>{
   for(let i = 0; i < lotteryInit.length; i++){
     if(lotteryInit[i].lottery_id == id){
       lotteryInit.splice(i, 1);
-      console.log("found");
+      break;
     }
   }
   console.log(lotteryInit);
@@ -32,7 +31,7 @@ const removeTicket = () =>{
       <div className="row">
         <div className="col-1">
           <button onClick={() => {
-            if(count > 1){
+            if(count >= 1){
               setCount(count - 1)
             }
             calcTotal(total - price)

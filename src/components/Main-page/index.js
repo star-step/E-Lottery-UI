@@ -10,6 +10,7 @@ export default function MainPage({setUserLogged, userLogged}) {
   const [lotteryInit, setLotteryInit] = useState([])
   // const [activeLotteries, setActiveLotteries] = useState([]);
   let activeLotteries = JSON.parse(localStorage.getItem("active_lotteries"))
+  localStorage.setItem("ticketsOpted", JSON.stringify(lotteryInit))
 
   let lotteryArray = [];
   console.log(lotteryInit);
