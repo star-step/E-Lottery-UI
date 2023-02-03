@@ -7,12 +7,12 @@ export default function MainPage({setUserLogged, userLogged}) {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [lotterySelected, setLotterySelected] = useState(true);
-
+  const [lotteryInit, setLotteryInit] = useState([])
   // const [activeLotteries, setActiveLotteries] = useState([]);
   let activeLotteries = JSON.parse(localStorage.getItem("active_lotteries"))
 
   let lotteryArray = [];
-
+  console.log(lotteryInit);
   const getActiveLotteries = () => {
     return fetch(apiUrl + "lottery/activeLotteries", {
       method: "POST",
@@ -31,7 +31,6 @@ export default function MainPage({setUserLogged, userLogged}) {
       })
       .then(function (data) {
         lotteryArray = data;
-        console.log(lotteryArray);
         setLoading(false)
         localStorage.setItem("active_lotteries", JSON.stringify(data));
       })
@@ -51,10 +50,16 @@ export default function MainPage({setUserLogged, userLogged}) {
     setTotal(tot);
   };
   
+  // const setLottery = (ticket) => {
+  //   setLotteryInit([...lotteryInit, ticket]);
+  // };
+  
   const checkOut = () => {
     if(total == 0){
-      setLotterySelected(false)
+      return setLotterySelected(false)
     }
+
+
   };
     return (
       <div className="container d-flex justify-content-center">
@@ -77,7 +82,7 @@ export default function MainPage({setUserLogged, userLogged}) {
               loading ? (<p>Please Wait</p>):
               activeLotteries.map((lottery, i) =>{
                   return (<div key={i} >
-                    <LotteryView price={lottery.price} name={lottery.name} calcTotal={calcTotal} total={total}/>
+                    <LotteryView id={lottery._id} price={lottery.price} name={lottery.name} calcTotal={calcTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} />
                     <p>Ticket Price : {lottery.price}</p>
                   </div>)
                 })
