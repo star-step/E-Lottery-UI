@@ -5,6 +5,7 @@ import Login from "./components/Login-modal";
 import Register from "./components/Register-modal";
 import AdminLogin from "./components/Admin-login";
 import AdminPage from "./components/Admin-page";
+import UserProfile from "./components/User-profile";
 import { AuthProvider } from "./contexts/Auth";
 import './App.css';
 
@@ -13,10 +14,10 @@ function App() {
   const [adminLogged, setAdminLogged] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token") != null) {
-      setUserLogged(true)
-    } else {
+    if (localStorage.getItem("token") == 'null') {
       setUserLogged(false)
+    } else {
+      setUserLogged(true)
     }
   }, [])
 
@@ -36,6 +37,7 @@ function App() {
         <Route path="/main" element={<MainPage setUserLogged={setUserLogged} userLogged={userLogged} />} />
         <Route path="/admin-pnlog" element={<AdminLogin setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
         <Route path="/admin-pn" element={<AdminPage setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
+        <Route path="/profile" element={<UserProfile setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
       </Routes>
     </AuthProvider>
   </BrowserRouter>

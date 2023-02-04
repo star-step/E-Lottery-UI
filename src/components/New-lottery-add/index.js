@@ -38,7 +38,7 @@ export default function AddLottery() {
     .then(function (data) {
       console.log(data);
       localStorage.setItem("token", data.token);
-      localStorage.setItem("tickets_bought", data.ticketsBought)
+      localStorage.setItem("tickets_bought", JSON.stringify(data.ticketsBought))
       // getAllUsers(data.loggedUser);
       // storeProfileInfo("./chat", data.loggedUser, true);
     })

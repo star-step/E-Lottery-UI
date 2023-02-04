@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function Login({setUserLogged, userLogged}) {
 
   let navigate = useNavigate(); 
-  console.log(userLogged);
+  // console.log(userLogged);
   const emailRef = useRef();
   const passwordRef = useRef();
   const siginInRef = useRef();

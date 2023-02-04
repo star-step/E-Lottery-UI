@@ -13,7 +13,6 @@ export default function MainPage({setUserLogged, userLogged}) {
   localStorage.setItem("ticketsOpted", JSON.stringify(lotteryInit))
 
   let lotteryArray = [];
-  console.log(lotteryInit);
   const getActiveLotteries = () => {
     return fetch(apiUrl + "lottery/activeLotteries", {
       method: "POST",
@@ -43,7 +42,9 @@ export default function MainPage({setUserLogged, userLogged}) {
   });
   
   const logout = () => {
-    localStorage.clear();
+    localStorage.setItem("token", null)
+    localStorage.setItem("user_id", null)
+    localStorage.setItem("tickets_bought", null)
     setUserLogged(false)
   };
 
@@ -51,23 +52,28 @@ export default function MainPage({setUserLogged, userLogged}) {
     setTotal(tot);
   };
   
-  // const setLottery = (ticket) => {
-  //   setLotteryInit([...lotteryInit, ticket]);
-  // };
-  
-  const checkOut = () => {
-    if(total == 0){
-      return setLotterySelected(false)
-    }
-
-
+  const checkOut = (val) => {
+    return setLotterySelected(val)
   };
+
+  useEffect(() => {
+    if(total == 0){
+      checkOut(false)
+    }else{
+      checkOut(true)
+    }
+  }, [total])
+  
+  
     return (
       <div className="container d-flex justify-content-center">
         <div className="row">
           {
             userLogged ? (
-              <p onClick={logout}>Logout</p>
+              <>
+                <p onClick={logout}>Logout</p>
+                <a href="/profile">Profile</a>
+              </>
             ) : 
             (
               <>
