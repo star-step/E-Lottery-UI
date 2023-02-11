@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import LotteryView from "../Lottery-view";
 import Cookies from 'universal-cookie';
+import { useNavigate } from "react-router-dom";
+import "./main.css"
 
 const cookies = new Cookies();
 const apiUrl = "http://localhost:5000/";
 export default function MainPage({setUserLogged, userLogged}) {
   
+  let navigate = useNavigate(); 
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [lotterySelected, setLotterySelected] = useState(true);
@@ -16,6 +19,7 @@ export default function MainPage({setUserLogged, userLogged}) {
   }
   let activeLotteries = JSON.parse(localStorage.getItem("active_lotteries"))
   localStorage.setItem("ticketsOpted", JSON.stringify(lotteryInit))
+  localStorage.setItem("checkingOut", false)
   // cookies.set('ticketsOpted',  JSON.stringify(lotteryInit));
   // let lotteryArray = [];
   // console.log(JSON.parse(localStorage.getItem("ticketsOpted"))); 
@@ -64,7 +68,14 @@ export default function MainPage({setUserLogged, userLogged}) {
   };
   
   const checkOut = (val) => {
-    return setLotterySelected(val)
+    setLotterySelected(val)
+    localStorage.setItem("checkingOut", true)
+    if(userLogged){
+      //proceed to checkout
+    }else{
+      //redirect to login page
+      navigate("/login");
+    }
   };
 
   const resetSelected = () => {
@@ -107,7 +118,13 @@ export default function MainPage({setUserLogged, userLogged}) {
         <div className="row">
           <div className="col-12">
             {
-              loading ? (<p>Please Wait</p>):
+              loading ? (
+                <div className="loader-div">
+                  <span className="loader">
+                    <span></span>
+                    <span></span>
+                  </span>
+                </div>):
               activeLotteries.map((lottery, i) =>{
                   return (<div key={i} >
                     <LotteryView id={lottery._id} price={lottery.price} name={lottery.name} setTotal={setTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} />
