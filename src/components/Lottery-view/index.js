@@ -5,7 +5,7 @@ export default function LotteryView({
   price,
   id,
   name,
-  calcTotal,
+  setTotal,
   total,
   setLotteryInit,
   lotteryInit,
@@ -14,24 +14,24 @@ export default function LotteryView({
   const [count, setCount] = useState(0);
   const [selectedQuantity, setSelectedQuantity] = useState(0);
 
-  useEffect(() => {
-    getSelectedQuantity()
-  }, [])
 
   const getSelectedQuantity = () => {
-    let allSelected = localStorage.getItem("ticketsOpted")
-    // console.log(allSelected);
-    if(allSelected == null){
+    let lotterySelected = JSON.parse(localStorage.getItem("ticketsOpted"))
+    let selectedCount = 0;
+    if(lotterySelected == null){
       return
     }
-    // for (let i = 0; i < lotteryInit.length; i++) {
-    //   if (lotteryInit[i].lottery_id == id) {
-    //     lotteryInit.splice(i, 1);
-    //     localStorage.setItem("ticketsOpted", JSON.stringify(lotteryInit))
-    //     break;
-    //   }
-    // }
+    for (let i = 0; i < lotterySelected.length; i++) {
+      if (lotterySelected[i].lottery_id == id) {
+        selectedCount++;
+      }
+    }
+    setCount(selectedCount);
   }
+
+  useEffect(() => {
+    getSelectedQuantity()
+  }, [lotteryInit])
 
   const generateTicket = () => {
     const uid = new ShortUniqueId();
@@ -39,8 +39,10 @@ export default function LotteryView({
       lottery_id: id,
       ticket: uid(),
       user_id: localStorage.getItem("user_id"),
+      price: price
     };
     setLotteryInit([...lotteryInit, ticket]);
+    console.log(lotteryInit);
     // setTickets([...tickets, ticket])
     // console.log(tickets);
   };
@@ -52,8 +54,16 @@ export default function LotteryView({
         break;
       }
     }
-    console.log(lotteryInit);
+    // console.log(lotteryInit);
   };
+
+  // useEffect(() => {
+  //   count = () =>{
+
+  //   }
+  // }, [count])
+  
+
   return (
     <div className="row">
       <div className="col-1">
@@ -62,8 +72,12 @@ export default function LotteryView({
             if (count >= 1) {
               setCount(count - 1);
             }
-            calcTotal(total - price);
-            removeTicket();
+            if(total > 0){
+              setTotal(total - price);
+              removeTicket();
+            }else{
+
+            }
           }}
         >
           -
@@ -82,7 +96,7 @@ export default function LotteryView({
         <button
           onClick={() => {
             setCount(count + 1);
-            calcTotal(parseInt(total) + parseInt(price));
+            setTotal(parseInt(total) + parseInt(price));
             generateTicket();
           }}
         >

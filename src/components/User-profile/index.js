@@ -29,8 +29,10 @@ export default function UserProfile() {
       .then(function (data) {
         setLoading(false)
         localStorage.setItem("lotteries_bought", JSON.stringify(data));
+        console.log(data);
       })
-      .catch(function (json) {});
+      .catch(function (json) {
+        console.log(json);});
   }
 
   useEffect(() => {
@@ -44,6 +46,7 @@ export default function UserProfile() {
   
     return (
       <div className="container d-flex justify-content-center">
+        <a href="./main">Home</a>
         Tickets bought :- 
         <div className="row">
             {
