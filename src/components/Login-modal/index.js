@@ -34,7 +34,11 @@ export default function Login({setUserLogged, userLogged}) {
       setLoading(true);
       await loginUser(email, password);
       setUserLogged(true)
-      navigate("/main");
+      if(JSON.parse(localStorage.getItem("checkingOut"))){
+        navigate("/payment");
+      }else{
+        navigate("/main")
+      }
     } catch {
       setError("Failed to log in");
       setUserLogged(false)

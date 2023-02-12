@@ -3,7 +3,7 @@ import LotteryView from "../Lottery-view";
 import Cookies from 'universal-cookie';
 import { useNavigate } from "react-router-dom";
 import "./main.css"
-
+import logo from './to-be-logo.svg';
 const cookies = new Cookies();
 const apiUrl = "http://localhost:5000/";
 export default function MainPage({setUserLogged, userLogged}) {
@@ -52,6 +52,7 @@ export default function MainPage({setUserLogged, userLogged}) {
     localStorage.setItem("token", null)
     localStorage.setItem("user_id", null)
     localStorage.setItem("tickets_bought", null)
+    localStorage.setItem("checkingOut", null)
     setUserLogged(false)
   };
 
@@ -98,48 +99,51 @@ export default function MainPage({setUserLogged, userLogged}) {
   });
   
     return (
-      <div className="container d-flex justify-content-center">
-        <div className="row">
-          {
-            userLogged ? (
-              <>
-                <p onClick={logout}>Logout</p>
-                <a href="/profile">Profile</a>
-              </>
-            ) : 
-            (
-              <>
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
-              </>
-            )
-          }
-        </div>
-        <div className="row">
-          <div className="col-12">
+      <>
+        <img className="mt-3 ms-3" src={logo} width="200"/>
+        <div className="container-fluid d-flex justify-content-center">
+          <div className="row">
             {
-              loading ? (
-                <div className="loader-div">
-                  <span className="loader">
-                    <span></span>
-                    <span></span>
-                  </span>
-                </div>):
-              activeLotteries.map((lottery, i) =>{
-                  return (<div key={i} >
-                    <LotteryView id={lottery._id} price={lottery.price} name={lottery.name} setTotal={setTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} />
-                    <p>Ticket Price : {lottery.price}</p>
-                  </div>)
-                })
-            }
-            <p>Total : {total}</p> 
-            <button className="btn-block" onClick={checkOut}>Proceed to Checkout</button>
-            <button className="btn-block" onClick={resetSelected}>Reset Selection</button>
-            {
-            lotterySelected ? (<p></p>) : (<p>Select lottery first</p>)
+              userLogged ? (
+                <>
+                  <p onClick={logout}>Logout</p>
+                  <a href="/profile">Profile</a>
+                </>
+              ) : 
+              (
+                <>
+                  <a href="/login">Login</a>
+                  <a href="/register">Register</a>
+                </>
+              )
             }
           </div>
+          <div className="row">
+            <div className="col-12">
+              {
+                loading ? (
+                  <div className="loader-div">
+                    <span className="loader">
+                      <span></span>
+                      <span></span>
+                    </span>
+                  </div>):
+                activeLotteries.map((lottery, i) =>{
+                    return (<div key={i} >
+                      <LotteryView id={lottery._id} price={lottery.price} name={lottery.name} setTotal={setTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} />
+                      <p>Ticket Price : {lottery.price}</p>
+                    </div>)
+                  })
+              }
+              <p>Total : {total}</p> 
+              <button className="btn-block" onClick={checkOut}>Proceed to Checkout</button>
+              <button className="btn-block" onClick={resetSelected}>Reset Selection</button>
+              {
+              lotterySelected ? (<p></p>) : (<p>Select lottery first</p>)
+              }
+            </div>
+          </div>
         </div>
-      </div>
+      </>
     );
 }
