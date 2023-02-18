@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function Login({setUserLogged, userLogged}) {
 
   let navigate = useNavigate(); 
-  console.log(userLogged);
+  // console.log(userLogged);
   const emailRef = useRef();
   const passwordRef = useRef();
   const siginInRef = useRef();
@@ -34,7 +34,11 @@ export default function Login({setUserLogged, userLogged}) {
       setLoading(true);
       await loginUser(email, password);
       setUserLogged(true)
-      navigate("/main");
+      if(JSON.parse(localStorage.getItem("checkingOut"))){
+        navigate("/payment");
+      }else{
+        navigate("/main")
+      }
     } catch {
       setError("Failed to log in");
       setUserLogged(false)

@@ -1,0 +1,38 @@
+a:hover {
+  cursor: pointer;
+}
+
+#jackpot-section{
+  margin-top: 6rem;
+}
+
+.primary-text-color{
+  color:#1c3953;
+}
+
+
+#payment-options{
+  background-color: #2b9b5e;
+}
+
+.payment-option h2, h1{
+  color: #fff;
+}
+
+.payment-option h2{
+  margin-top: -1rem;
+}
+
+#about-us{
+  background-color: #1c3953;
+}
+
+.about-us-content h1, p{
+  color: #fff;
+}
+
+.placeholder-img{
+  height: 300px; 
+  width: 60%; 
+  background-color: #f1f1f1;
+}

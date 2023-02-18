@@ -29,7 +29,11 @@ export default function Register({setUserLogged, userLogged}) {
         passwordRef.current.value,
       );
       setUserLogged(true)
-      navigate("/main");
+      if(JSON.parse(localStorage.getItem("checkingOut"))){
+        navigate("/payment");
+      }else{
+        navigate("/main")
+      }
     } catch {
       setError("Failed to create an account");
       setUserLogged(false)

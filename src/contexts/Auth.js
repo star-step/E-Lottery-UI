@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
       })
       .then(function (data) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("tickets_bought", data.ticketsBought)
+        localStorage.setItem("tickets_bought", JSON.stringify(data.ticketsBought))
         localStorage.setItem("user_id", data.userId)
         // getAllUsers(data.loggedUser);
         // storeProfileInfo("./chat", data.loggedUser, true);
@@ -128,6 +128,38 @@ export function AuthProvider({ children }) {
   function logout() {
     return localStorage.clear();
   }
+  
+  const saveBoughtTickets = async () => {
+    // setLoad(true)
+    let ticketsBought = JSON.parse(localStorage.getItem('ticketsOpted'))
+    for(let i = 0; i < ticketsBought.length; i++){
+      fetch(apiUrl + "lottery/addTicketToUserNLottery", {
+        method: "post",
+        body: JSON.stringify(ticketsBought[i]),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            return response.json();
+          } else {
+            return response.json().then((json) => {
+              throw new Error(json.message);
+            });
+          }
+        })
+        .then(function (data) {
+          console.log(data);
+          // getAllUsers(data.loggedUser);
+          // storeProfileInfo("./chat", data.loggedUser, true);
+        })
+        .catch(function (json) {});
+    }
+    // localStorage.setItem('savingTickets', false)
+    localStorage.setItem("checkingOut", null)
+    // setLoad(false)
+  };
 
   // function updateEmail(email) {
   //   return currentUser.updateEmail(email);
@@ -153,7 +185,8 @@ export function AuthProvider({ children }) {
     // updatePassword,
     checkLoggedIn,
     storeProfileInfo,
-    loginAdmin
+    loginAdmin,
+    saveBoughtTickets
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
