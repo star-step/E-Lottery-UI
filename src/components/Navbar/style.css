@@ -1,0 +1,23 @@
+.navbar{
+  background-color: #1c3953;
+}
+
+.navbar-nav .nav-link{
+  color: white!important;
+}
+
+.active{
+  border-bottom: 2px solid #a44b55;
+}
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+}
+
+.dropdown-menu{
+  left: -8rem!important;
+}

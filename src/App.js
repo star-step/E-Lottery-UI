@@ -15,7 +15,6 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("loading");
     if (localStorage.getItem("token") === 'null') {
       setUserLogged(false)
     } else {
@@ -26,17 +25,17 @@ function App() {
 
   return (
     <BrowserRouter>
-    <AuthProvider>
-      <Routes>
-        <Route path="/" element={<MainPage setUserLogged={setUserLogged} userLogged={userLogged} />} />
-        <Route path="/main" element={<MainPage setUserLogged={setUserLogged} userLogged={userLogged} />} />
-        <Route path="/login" element={<Login setUserLogged={setUserLogged} userLogged={userLogged} />}/>
-        <Route path="/register" element={<Register setUserLogged={setUserLogged} userLogged={userLogged} />}/>
-        <Route path="/admin-pnlog" element={<AdminLogin setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
-        <Route path="/admin-pn" element={<AdminPage setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
-        <Route path="/profile" element={<UserProfile setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
-      </Routes>
-    </AuthProvider>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<MainPage setUserLogged={setUserLogged} userLogged={userLogged} />} />
+          <Route path="/main" element={<MainPage setUserLogged={setUserLogged} userLogged={userLogged} />} />
+          <Route path="/login" element={<Login setUserLogged={setUserLogged} userLogged={userLogged} />}/>
+          <Route path="/register" element={<Register setUserLogged={setUserLogged} userLogged={userLogged} />}/>
+          <Route path="/admin-pnlog" element={<AdminLogin setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
+          <Route path="/admin-pn" element={<AdminPage setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
+          <Route path="/profile" element={<UserProfile setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
+        </Routes>
+      </AuthProvider>
   </BrowserRouter>
   );
 }
