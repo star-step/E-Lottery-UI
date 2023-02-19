@@ -6,7 +6,6 @@ export default function UserProfile() {
   const [loading, setLoading] = useState(true);
   const [ticketsBought, setTicketsBought] = useState(JSON.parse(localStorage.getItem("lotteries_bought")));
   // const ticketsBought = JSON.parse(localStorage.getItem("tickets_bought"))
-  console.log(ticketsBought);
   const getBoughtTickets = () => {
     let id = localStorage.getItem("user_id")
     let userId = {
@@ -31,7 +30,6 @@ export default function UserProfile() {
       .then(function (data) {
         localStorage.setItem("lotteries_bought", JSON.stringify(data));
         setTicketsBought(data)
-        console.log(ticketsBought);
         setLoading(false)
       })
       .catch(function (json) {

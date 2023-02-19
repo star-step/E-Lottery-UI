@@ -47,7 +47,6 @@ export default function MainPage({setUserLogged, userLogged}) {
       .then(function (data) {
         // lotteryArray = data;
         setLoading(false)
-        console.log("calling");
         localStorage.setItem("active_lotteries", JSON.stringify(data));
       })
       .catch(function (json) {});

@@ -31,7 +31,7 @@ export default function AdminPage({ setAdminLogged, adminLogged }) {
             id="staticBackdrop"
             data-bs-backdrop="static"
             data-bs-keyboard="false"
-            tabindex="-1"
+            tabIndex="-1"
             aria-labelledby="staticBackdropLabel"
             aria-hidden="true"
           >
@@ -59,7 +59,8 @@ export default function AdminPage({ setAdminLogged, adminLogged }) {
                   >
                     Close
                   </button>
-                  <button type="button" className="btn btn-primary">
+                  <button type="button" className="btn btn-primary"
+                    data-bs-dismiss="modal">
                     Understood
                   </button>
                 </div>

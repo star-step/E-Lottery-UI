@@ -6,18 +6,22 @@ const apiUrl = "http://localhost:5000/";
 export default function AddLottery() {
 
   let navigate = useNavigate(); 
-  const nameRef = useRef();
-  const stateRef = useRef();
+  const jackpotRef = useRef();
+  const startTimeRef = useRef();
+  const endTimeRef = useRef();
+  const priceRef = useRef();
   const siginInRef = useRef();
   const { loginUser, checkLoggedIn } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useNavigate();
   
-  function createLottery(name, state) {
+  function createLottery(jackpotValue, startTime, endTime, price) {
     let lottery = {
-      name: name,
-      state: state
+      jackpot: jackpotValue,
+      StartTime: startTime,
+      EndTime: endTime,
+      price: price
     };
     return fetch(apiUrl + "lottery/createLottery", {
       method: "POST",
@@ -40,6 +44,7 @@ export default function AddLottery() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("tickets_bought", JSON.stringify(data.ticketsBought))
       // getAllUsers(data.loggedUser);
+      document.getElementById('closeModalButton').click()
       // storeProfileInfo("./chat", data.loggedUser, true);
     })
     .catch(function (json) {});
@@ -50,23 +55,36 @@ export default function AddLottery() {
     e && e.preventDefault();
     setError("");
 
-    const name = nameRef.current.value;
-    const state = stateRef.current.value;
+    const jackpotValue = jackpotRef.current.value;
+    const startTime = startTimeRef.current.value;
+    const endTime = endTimeRef.current.value;
+    const price = priceRef.current.value;
 
-    if (!name) {
-      setError("Email is not provided");
+    if (!jackpotValue) {
+      setError("Jackpot amount is not provided");
       return;
     }
 
-    if (!state) {
-      setError("Password is not provided");
+    if (!price) {
+      setError("price is is not provided");
+      return;
+    }
+    
+    if (!endTime) {
+      setError("end time is is not provided");
+      return;
+    }
+    
+    if (!startTime) {
+      setError("start time is is not provided");
       return;
     }
     try {
       setLoading(true);
-      await createLottery(name, state);
+      await createLottery(jackpotValue, startTime, endTime, price);
       // setUserLogged(true)
-      navigate("/main");
+      
+      // navigate("/main");
     } catch {
       setError("Failed to log in");
       // setUserLogged(false)
@@ -80,30 +98,34 @@ export default function AddLottery() {
     const handleKeypress = (e) => {
       if (e.key === "Enter") {
         const activeEle = document.activeElement;
-        const nameEle = nameRef.current;
-        const stateEle = stateRef.current;
+        const jackpotAmtEle = jackpotRef.current;
+        const startTimeEle = startTimeRef.current;
+        const endTimeEle = endTimeRef.current;
+        const priceEle = priceRef.current;
 
-        const name = nameEle.value;
-        const state = stateEle.value;
+        const jakpotValue = jackpotAmtEle.value;
+        const startTime = startTimeEle.value;
+        const endTime = endTimeEle.value;
+        const price = priceEle.value;
 
-        //if both are empty return
-        if (!(state || name)) {
-          return;
-        }
-        //if name is selected and state is empty
-        if (activeEle === nameEle && !state) {
-          stateEle.focus();
-          return;
-        }
-        //if passeord is selected and name is empty
-        if (activeEle === stateEle && !name) {
-          nameEle.focus();
-          return;
-        }
-        //if any one is empty
-        if (!(state && name)) {
-          return;
-        }
+        // //if both are empty return
+        // if (!(startTime || jakpotValue || endTime || price)) {
+        //   return;
+        // }
+        // //if jakpotValue is selected and state is empty
+        // if (activeEle === jackpotAmtEle && !state) {
+        //   stateEle.focus();
+        //   return;
+        // }
+        // //if passeord is selected and jakpotValue is empty
+        // if (activeEle === stateEle && !jakpotValue) {
+        //   jackpotAmtEle.focus();
+        //   return;
+        // }
+        // //if any one is empty
+        // if (!(state && jakpotValue)) {
+        //   return;
+        // }
 
         handleSubmit();
       }
@@ -117,36 +139,67 @@ export default function AddLottery() {
   return (
     <div className="container d-flex justify-content-center">
       <a href="main">Main Page</a>
+      <button id="closeModalButton" style={{display: "none"}} data-bs-dismiss="modal"></button>
       <form className="col-4">
         {error && <div className="alert alert-danger">{error}</div>}
         <div className="mb-3">
           <label htmlFor="lotteryName" className="form-label">
-            Lottery Name
+            Lottery Amount
           </label>
           <input
             type="text"
             className="form-control"
             id="lotteryName"
             aria-describedby="LotteryName"
-            ref={nameRef}
+            ref={jackpotRef}
           />
           <div id="LotteryName" className="form-text">
-            Enter Lottery Name
+            Enter Lottery Amount
           </div>
         </div>
         <div className="mb-3">
           <label htmlFor="lotteryState" className="form-label">
-            State
+            Start Time
           </label>
           <input
-            type="text"
+            type="datetime-local"
             className="form-control"
             id="lotteryState"
             aria-describedby="LotteryState"
-            ref={stateRef}
+            ref={startTimeRef}
           />
           <div id="LotteryState" className="form-text">
-            Lottery State
+            Start Time
+          </div>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lotteryState" className="form-label">
+            End Time
+          </label>
+          <input
+            type="datetime-local"
+            className="form-control"
+            id="lotteryState"
+            aria-describedby="LotteryState"
+            ref={endTimeRef}
+          />
+          <div id="LotteryState" className="form-text">
+            End Time
+          </div>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="lotteryState" className="form-label">
+            Price
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="lotteryState"
+            aria-describedby="LotteryState"
+            ref={priceRef}
+          />
+          <div id="LotteryState" className="form-text">
+            Price
           </div>
         </div>
         {/* <div className="mb-3 form-check">

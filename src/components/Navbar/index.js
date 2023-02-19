@@ -10,7 +10,6 @@ const apiUrl = "http://localhost:5000/";
 export default function Navbar({setUserLogged, userLogged}) {
   
   let navigate = useNavigate(); 
-  console.log(userLogged);
   const logout = () => {
     localStorage.setItem("token", null)
     localStorage.setItem("user_id", null)

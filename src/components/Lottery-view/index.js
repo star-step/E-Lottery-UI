@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ShortUniqueId from "https://esm.sh/short-unique-id";
+import Timer from "../Timer";
 import "./style.css"
 
 export default function LotteryView({
@@ -26,7 +27,6 @@ export default function LotteryView({
   cardColor = {
     backgroundColor: color
   }
-  console.log(cardColor);
   const getSelectedQuantity = () => {
     let lotterySelected = JSON.parse(localStorage.getItem("ticketsOpted"))
     let selectedCount = 0;
@@ -54,7 +54,6 @@ export default function LotteryView({
       price: price
     };
     setLotteryInit([...lotteryInit, ticket]);
-    console.log(lotteryInit);
     // setTickets([...tickets, ticket])
     // console.log(tickets);
   };
@@ -73,7 +72,9 @@ export default function LotteryView({
     
     <div className="card mx-auto border-0">
       {/* <img src="..." className="card-img-top" alt="..."> */}
-      <div key={index} className="placeholder-div" style={cardColor}></div>
+      <div key={index} className="placeholder-div" style={cardColor}>
+        <Timer endtime="2023-02-22T04:00"/>
+      </div>
       <div className="card-body primary-text-color text-center">
         <h3>Price : {price}</h3>
         {/* <h6>Price : {price}</h6> */}
