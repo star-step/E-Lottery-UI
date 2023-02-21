@@ -16,7 +16,6 @@ export default function LotteryView({
   const [count, setCount] = useState(0);
   const [selectedQuantity, setSelectedQuantity] = useState(0);
   let cardColor;
-  console.log(lotteryState);
   let color = "#1c3953";
   if (index % 3 == 1) {
     color = "#2b9b5e";
