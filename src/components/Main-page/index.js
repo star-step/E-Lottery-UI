@@ -30,7 +30,6 @@ export default function MainPage({ setUserLogged, userLogged }) {
   localStorage.setItem("lotteries_bought", null);
 
   const sortLotteries = (lotteries) => {
-    let include = []
     let activeLotteries = [];
     let completedLotteries = [];
     let stagedLotteries = [];
