@@ -86,6 +86,22 @@ export default function MainPage({setUserLogged, userLogged}) {
       }
     }
   };
+  
+  const lotteryType = (lottery) => {
+    if(lottery){
+      var date_now = Date.parse(new Date());
+      if(Date.parse(lottery.StartTime) <= date_now && Date.parse(lottery.EndTime) >= date_now){
+        //show timeleft
+        return 'Active'
+      }else if(Date.parse(lottery.EndTime) <= date_now){
+        //show entries closed
+        return 'Completed'
+      }else{
+        //show remaining time left to start
+        return 'Stage'
+      }
+    }
+  };
 
   useEffect(() => {
     if(total !== 0){
@@ -113,6 +129,7 @@ export default function MainPage({setUserLogged, userLogged}) {
   useEffect(() => {
     getActiveLotteries()
     calcTotal()
+    lotteryType()
   });
   
     return (
@@ -132,7 +149,7 @@ export default function MainPage({setUserLogged, userLogged}) {
                   </div>):
                 activeLotteries.map((lottery, i) =>{
                     return (<div className="col-md-4" key={i} >
-                      <LotteryView index={i} id={lottery._id} price={lottery.price} name={lottery.name} setTotal={setTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} />
+                      <LotteryView lotteryState={lotteryType(lottery)} index={i} lottery={lottery} id={lottery._id} price={lottery.price} name={lottery.name} setTotal={setTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} />
                     </div>)
                   })
               } 

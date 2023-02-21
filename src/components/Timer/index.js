@@ -9,47 +9,44 @@ export default function Timer({ endtime }) {
   const [minute, setMinutes] = useState(0);
   const [second, setSeconds] = useState(0);
   const [left_cartoon, setLeft_cartoon] = useState({});
+
   const toTimestamp = (strDate) => {
     const dt = Date.parse(strDate);
     return dt;
   };
 
   const calcTImeLeft = () => {
-    setInterval(function () {
-      var date_future = toTimestamp(endtime);
-      var date_now = new Date();
-
-      var seconds = Math.floor((date_future - date_now) / 1000);
-      var minutes = Math.floor(seconds / 60);
-      var hours = Math.floor(minutes / 60);
-      var days = Math.floor(hours / 24);
-
-      hours = hours - days * 24;
-      minutes = minutes - days * 24 * 60 - hours * 60;
-      seconds = seconds - days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60;
-      setdays(days);
-      setHours(hours);
-      setMinutes(minutes);
-      setSeconds(seconds);
-
-      setLeft_cartoon({
-        animation: `circleProgressLoad_left 60s linear infinite forwards`,
-      });
-      // console.log("Time until new year:\nDays: " + days + " Hours: " + hours + " Minutes: " + minutes + " Seconds: " + seconds);
-    }, 1000);
+    if(endtime !== "00"){
+      setInterval(function () {
+        var date_future = toTimestamp(endtime);
+        var date_now = new Date();
+        var seconds = Math.floor((date_future - date_now) / 1000);
+        var minutes = Math.floor(seconds / 60);
+        var hours = Math.floor(minutes / 60);
+        var days = Math.floor(hours / 24);
+  
+        hours = hours - days * 24;
+        minutes = minutes - days * 24 * 60 - hours * 60;
+        seconds = seconds - days * 24 * 60 * 60 - hours * 60 * 60 - minutes * 60;
+        setdays(days);
+        setHours(hours);
+        setMinutes(minutes);
+        setSeconds(seconds);
+        // console.log("Time until new year:\nDays: " + days + " Hours: " + hours + " Minutes: " + minutes + " Seconds: " + seconds);
+      }, 1000);
+    }
   };
 
   useEffect(() => {
     calcTImeLeft();
   }, []);
-  const percentage = 66;
 
   return (
     <>
-      <div className="row ms-4">
+      <div className="row mt-2 mx-1">
         <div className="progress-bar col-3">
           <CircularProgressbar
-            maxValue={30}
+            maxValue={30} 
             value={day}
             text={`${day}`} 
             strokeWidth={10}
@@ -70,12 +67,13 @@ export default function Timer({ endtime }) {
               // pathTransition: 'none',
 
               // Colors
-              pathColor: `rgba(62, 152, 199, ${percentage / 100})`,
+              pathColor: `rgba(62, 152, 199)`,
               textColor: "rgb(207 0 0)",
               trailColor: "#d6d6d6",
               backgroundColor: "#3e98c7",
             })}
           />
+          Days
         </div>
         <div className="progress-bar col-3">
           <CircularProgressbar
@@ -100,12 +98,13 @@ export default function Timer({ endtime }) {
               // pathTransition: 'none',
 
               // Colors
-              pathColor: `rgba(62, 152, 199, ${percentage / 100})`,
+              pathColor: `rgba(62, 152, 199)`,
               textColor: "rgb(207 0 0)",
               trailColor: "#d6d6d6",
               backgroundColor: "#3e98c7",
             })}
           />
+          Hours
         </div>
         <div className="progress-bar col-3">
           <CircularProgressbar
@@ -130,12 +129,13 @@ export default function Timer({ endtime }) {
               // pathTransition: 'none',
 
               // Colors
-              pathColor: `rgba(62, 152, 199, ${percentage / 100})`,
+              pathColor: `rgba(62, 152, 199)`,
               textColor: "rgb(207 0 0)",
               trailColor: "#d6d6d6",
               backgroundColor: "#3e98c7",
             })}
           />
+          Minutes
         </div>
         <div className="progress-bar col-3">
           <CircularProgressbar
@@ -160,12 +160,13 @@ export default function Timer({ endtime }) {
               // pathTransition: 'none',
 
               // Colors
-              pathColor: `rgba(62, 152, 199, ${percentage / 100})`,
+              pathColor: `rgba(62, 152, 199)`,
               textColor: "rgb(207 0 0)",
               trailColor: "#d6d6d6",
               backgroundColor: "#3e98c7"
             })}
           />
+          Seconds
         </div>
       </div>
     </>

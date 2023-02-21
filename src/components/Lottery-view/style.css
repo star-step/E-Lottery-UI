@@ -1,4 +1,35 @@
 .placeholder-div{
+  position:relative;
   height: 300px; 
   width: 100%;
+  background-color: hsla(39, 100%, 2%, 0.23);
+  border: 1px solid hsla(39, 100%, 2%, 0.36);
+  overflow:hidden;
+  cursor: pointer;
+}
+.show-buy-options:hover > .buy-ticket{
+  bottom: 3px;
+}
+
+.buy-ticket{
+  position:absolute;
+  bottom:-30px;
+  width:100%;
+  height:30px;
+  background-color: transparent;
+  -webkit-transition: bottom 0.5s ease;
+  -moz-transition: bottom 0.5s ease;
+  -o-transition: bottom 0.5s ease;
+  -ms-transition: bottom 0.5s ease;
+  transition: bottom 0.5s ease;
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  padding: 6px 0px;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.42857;
 }

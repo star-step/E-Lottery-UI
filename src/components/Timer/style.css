@@ -1,9 +1,5 @@
 .progress-bar{
-  width: 60px;
-  height: 60px;
+  width: 25%;
+  height: auto;
   background-color: transparent;
-}
-
-.CircularProgressbar-text{
-  margin-top: 5px;
 }
