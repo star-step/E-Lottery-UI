@@ -7,7 +7,7 @@ import "./style.css"
 import logo from '../../assets/images/to-be-logo.svg';
 const cookies = new Cookies();
 const apiUrl = "http://localhost:5000/";
-export default function Navbar({setUserLogged, userLogged}) {
+export default function Navbar({setUserLogged, userLogged, total}) {
   
   let navigate = useNavigate(); 
   const logout = () => {
@@ -60,6 +60,9 @@ export default function Navbar({setUserLogged, userLogged}) {
                   </li>
                 )
                 }
+                <li className="nav-item mx-2">
+                  <a className="nav-link" href="#"><i class="fa-sharp fa-solid fa-cart-shopping"></i> : &#8377; {total}</a>
+                </li>
               </ul>
             </div>
           </div>

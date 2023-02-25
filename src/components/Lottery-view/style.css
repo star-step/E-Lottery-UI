@@ -6,9 +6,10 @@
   border: 1px solid hsla(39, 100%, 2%, 0.36);
   overflow:hidden;
   cursor: pointer;
+  border-radius: 25px;
 }
 .show-buy-options:hover > .buy-ticket{
-  bottom: 3px;
+  bottom: 6px;
 }
 
 .buy-ticket{
@@ -25,11 +26,26 @@
 }
 
 .btn-circle {
-  width: 30px;
-  height: 30px;
-  padding: 6px 0px;
-  border-radius: 15px;
-  text-align: center;
-  font-size: 12px;
-  line-height: 1.42857;
+  width: 50px;
+  height: 50px;
+  padding: 10px 15px;
+  border-radius: 35px;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.buy-button{
+  background-color: #292F2F;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.remove-btn{
+  background-color: #D01515;
+  color: #fff;
+}
+
+.add-btn{
+  background-color: #1B8147;
+  color: #fff;
 }

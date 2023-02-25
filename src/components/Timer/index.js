@@ -3,7 +3,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "./style.css";
 
-export default function Timer({ endtime }) {
+export default function Timer({ endtime, color }) {
   const [day, setdays] = useState(0);
   const [hour, setHours] = useState(0);
   const [minute, setMinutes] = useState(0);
@@ -43,7 +43,7 @@ export default function Timer({ endtime }) {
 
   return (
     <>
-      <div className="row mt-2 mx-1">
+      <div className="row mt-2 mx-1 bg">
         <div className="progress-bar col-3">
           <CircularProgressbar
             maxValue={30} 
@@ -67,8 +67,8 @@ export default function Timer({ endtime }) {
               // pathTransition: 'none',
 
               // Colors
-              pathColor: `rgba(62, 152, 199)`,
-              textColor: "rgb(207 0 0)",
+              pathColor: `${color}`,
+              textColor: "#fff",
               trailColor: "#d6d6d6",
               backgroundColor: "#3e98c7",
             })}
@@ -98,8 +98,8 @@ export default function Timer({ endtime }) {
               // pathTransition: 'none',
 
               // Colors
-              pathColor: `rgba(62, 152, 199)`,
-              textColor: "rgb(207 0 0)",
+              pathColor: `${color}`,
+              textColor: "#fff",
               trailColor: "#d6d6d6",
               backgroundColor: "#3e98c7",
             })}
@@ -129,13 +129,13 @@ export default function Timer({ endtime }) {
               // pathTransition: 'none',
 
               // Colors
-              pathColor: `rgba(62, 152, 199)`,
-              textColor: "rgb(207 0 0)",
+              pathColor: `${color}`,
+              textColor: "#fff",
               trailColor: "#d6d6d6",
               backgroundColor: "#3e98c7",
             })}
           />
-          Minutes
+          Min
         </div>
         <div className="progress-bar col-3">
           <CircularProgressbar
@@ -160,13 +160,14 @@ export default function Timer({ endtime }) {
               // pathTransition: 'none',
 
               // Colors
-              pathColor: `rgba(62, 152, 199)`,
-              textColor: "rgb(207 0 0)",
+              // pathColor: `rgba(62, 152, 199)`,
+              pathColor: `${color}`,
+              textColor: "#fff",
               trailColor: "#d6d6d6",
               backgroundColor: "#3e98c7"
             })}
           />
-          Seconds
+          Sec
         </div>
       </div>
     </>

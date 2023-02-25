@@ -16,6 +16,7 @@ export default function MainPage({ setUserLogged, userLogged }) {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [lotterySelected, setLotterySelected] = useState(true);
+  const [count, setCount] = useState(0);
   const [lotteryInit, setLotteryInit] = useState(
     JSON.parse(localStorage.getItem("ticketsOpted"))
   );
@@ -161,11 +162,11 @@ export default function MainPage({ setUserLogged, userLogged }) {
   useEffect(() => {
     getLotteries();
     calcTotal();
-  });
+  },[]);
 
   return (
     <>
-      <Navbar userLogged={userLogged} setUserLogged={setUserLogged} />
+      <Navbar userLogged={userLogged} setUserLogged={setUserLogged} total={total} />
       <section className="" id="jackpot-section">
         <h1 className="text-center primary-text-color">Current Jackpot</h1>
         <div className="d-flex justify-content-center">
@@ -180,7 +181,7 @@ export default function MainPage({ setUserLogged, userLogged }) {
             ) : (
               activeLotteries.map((lottery, i) => {
                 return (
-                  <div className="col-md-4" key={i}>
+                  <div className="col-md-4 px-4" key={i}>
                     <LotteryView
                       lotteryState={lottery.state}
                       index={i}
@@ -192,6 +193,8 @@ export default function MainPage({ setUserLogged, userLogged }) {
                       total={total}
                       setLotteryInit={setLotteryInit}
                       lotteryInit={lotteryInit}
+                      setCount={setCount}
+                      count={count}
                     />
                   </div>
                 );

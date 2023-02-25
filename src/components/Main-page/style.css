@@ -15,7 +15,7 @@ a:hover {
   background-color: #2b9b5e;
 }
 
-.payment-option h2, h1{
+.payment-option > h2 h1{
   color: #fff;
 }
 
@@ -24,10 +24,10 @@ a:hover {
 }
 
 #about-us{
-  background-color: #1c3953;
+  background-color: #004E4E;
 }
 
-.about-us-content h1, p{
+.about-us-content h1 p{
   color: #fff;
 }
 
@@ -35,4 +35,8 @@ a:hover {
   height: 300px; 
   width: 60%; 
   background-color: #f1f1f1;
+}
+
+.btn-circle > i{
+  font-size: 1.5rem;
 }
