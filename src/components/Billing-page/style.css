@@ -1,0 +1,13 @@
+.total-card{
+  background-color: #fafafa;
+}
+
+.cart-head{
+  border-bottom: 1px solid #000;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.cart-item{
+  border-bottom: 1px solid #000;
+}

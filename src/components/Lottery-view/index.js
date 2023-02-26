@@ -114,7 +114,7 @@ export default function LotteryView({
                       color={color}
                     />
                   </div>
-                  <h4 className="text-center mt-3 mt-sm-4">Prize Pool - 1203244</h4>
+                  <h4 className="text-center mt-3 mt-sm-4">Prize Pool - {lottery.jackpot}</h4>
                   <h3 className="text-center mt-sm-3">
                     Ticket price : {lottery.price}
                     </h3>
@@ -185,7 +185,7 @@ export default function LotteryView({
       >
         <div className="lottery-info">
           <h2 className="mt-3 text-light">Prize Pool</h2>
-          <h1>10k</h1>
+          <h1>{lottery.jackpot}</h1>
           <p className="mb-0">
             {lotteryState === "Active"
               ? "Entries closes in"

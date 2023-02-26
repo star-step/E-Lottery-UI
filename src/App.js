@@ -6,6 +6,7 @@ import Register from "./components/Register-modal";
 import AdminLogin from "./components/Admin-login";
 import AdminPage from "./components/Admin-page";
 import UserProfile from "./components/User-profile";
+import Checkout from "./components/Billing-page";
 import { AuthProvider } from "./contexts/Auth";
 import './App.css';
 
@@ -33,7 +34,8 @@ function App() {
           <Route path="/register" element={<Register setUserLogged={setUserLogged} userLogged={userLogged} />}/>
           <Route path="/admin-pnlog" element={<AdminLogin setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
           <Route path="/admin-pn" element={<AdminPage setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
-          <Route path="/profile" element={<UserProfile setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
+          <Route path="/profile" element={<UserProfile setUserLogged={setUserLogged} userLogged={userLogged} />} />
+          <Route path="/checkout" element={<Checkout setUserLogged={setUserLogged} userLogged={userLogged} />} />
         </Routes>
       </AuthProvider>
   </BrowserRouter>

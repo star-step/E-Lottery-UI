@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import LotteryView from "../Lottery-view";
 import Navbar from "../Navbar";
+import ListLottery from "../List-lotteries";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/Auth";
@@ -100,6 +100,7 @@ export default function MainPage({ setUserLogged, userLogged }) {
     for (let i = 0; i < lotterySelected.length; i++) {
       totalSelectedPrice += lotterySelected[i].price;
     }
+    localStorage.setItem("total_payable", totalSelectedPrice)
     setTotal(totalSelectedPrice);
   };
 
@@ -167,42 +168,7 @@ export default function MainPage({ setUserLogged, userLogged }) {
   return (
     <>
       <Navbar userLogged={userLogged} setUserLogged={setUserLogged} total={total} />
-      <section className="" id="jackpot-section">
-        <h1 className="text-center primary-text-color">Current Jackpot</h1>
-        <div className="d-flex justify-content-center">
-          <div className="container row mt-4">
-            {loading ? (
-              <div className="loader-div">
-                <span className="loader">
-                  <span></span>
-                  <span></span>
-                </span>
-              </div>
-            ) : (
-              activeLotteries.map((lottery, i) => {
-                return (
-                  <div className="col-md-4 px-4" key={i}>
-                    <LotteryView
-                      lotteryState={lottery.state}
-                      index={i}
-                      lottery={lottery}
-                      id={lottery._id}
-                      price={lottery.price}
-                      name={lottery.name}
-                      setTotal={setTotal}
-                      total={total}
-                      setLotteryInit={setLotteryInit}
-                      lotteryInit={lotteryInit}
-                      setCount={setCount}
-                      count={count}
-                    />
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-      </section>
+      <ListLottery loading={loading} activeLotteries={activeLotteries} setTotal={setTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} setCount={setCount} count={count} />
       <section className="mt-4 py-5" id="payment-options">
         <div className="container py-5 text-center">
           <div className="row">

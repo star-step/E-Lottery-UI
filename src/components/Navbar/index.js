@@ -61,7 +61,7 @@ export default function Navbar({setUserLogged, userLogged, total}) {
                 )
                 }
                 <li className="nav-item mx-2">
-                  <a className="nav-link" href="#"><i class="fa-sharp fa-solid fa-cart-shopping"></i> : &#8377; {total}</a>
+                  <a className="nav-link" href="/checkout"><i className="fa-sharp fa-solid fa-cart-shopping"></i> : &#8377;{total}</a>
                 </li>
               </ul>
             </div>
