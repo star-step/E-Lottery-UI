@@ -6,7 +6,7 @@
   border: 1px solid hsla(39, 100%, 2%, 0.36);
   overflow:hidden;
   cursor: pointer;
-  border-radius: 25px;
+  border-radius: 10px;
 }
 .show-buy-options:hover > .buy-ticket{
   bottom: 6px;
@@ -49,3 +49,23 @@
   background-color: #1B8147;
   color: #fff;
 }
+
+.modal-content{
+  background-color: #202020;
+}
+
+.modal-content *{
+  color: #fff;
+}
+
+.modal-header{
+  border-bottom: none;
+}
+
+.modal-footer{
+  border-top: none;
+}
+
+/* .lottery-card{
+  background-color: #f1f1f1;
+} */

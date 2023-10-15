@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../Navbar";
 import ListLottery from "../List-lotteries";
+import Checkout from "../Billing-page";
+import Footer from "../Footer";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/Auth";
@@ -10,17 +11,15 @@ import check from "../../assets/images/check.svg";
 import upi from "../../assets/images/UPI.svg";
 const cookies = new Cookies();
 const apiUrl = "http://localhost:5000/";
-export default function MainPage({ setUserLogged, userLogged }) {
+
+export default function MainPage({ setUserLogged, userLogged, total, setTotal, currentView }) {
   let navigate = useNavigate();
-  const { saveBoughtTickets } = useAuth();
-  const [total, setTotal] = useState(0);
+  const { saveBoughtTickets, getBoughtTickets } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [lotterySelected, setLotterySelected] = useState(true);
   const [count, setCount] = useState(0);
   const [lotteryInit, setLotteryInit] = useState(
     JSON.parse(localStorage.getItem("ticketsOpted"))
   );
-  let flag = false;
 
   if (!lotteryInit) {
     setLotteryInit([]);
@@ -100,8 +99,8 @@ export default function MainPage({ setUserLogged, userLogged }) {
     for (let i = 0; i < lotterySelected.length; i++) {
       totalSelectedPrice += lotterySelected[i].price;
     }
-    localStorage.setItem("total_payable", totalSelectedPrice)
     setTotal(totalSelectedPrice);
+    localStorage.setItem("total_payable", totalSelectedPrice)
   };
 
   const checkOut = async () => {
@@ -138,21 +137,6 @@ export default function MainPage({ setUserLogged, userLogged }) {
     }
   };
 
-  useEffect(() => {
-    if (total !== 0) {
-      setLotterySelected(true);
-    } else {
-      setLotterySelected(false);
-    }
-  }, [total]);
-
-  // useEffect(() => {
-  //   if(!flag){
-  //     setLoading(true)
-  //   }else{
-  //     setLoading(false)
-  //   }
-  // }, [flag])
 
   const resetSelected = () => {
     localStorage.setItem("ticketsOpted", null);
@@ -163,12 +147,22 @@ export default function MainPage({ setUserLogged, userLogged }) {
   useEffect(() => {
     getLotteries();
     calcTotal();
+    if(userLogged){
+      getBoughtTickets()
+    }
   },[]);
-
   return (
     <>
-      <Navbar userLogged={userLogged} setUserLogged={setUserLogged} total={total} />
-      <ListLottery loading={loading} activeLotteries={activeLotteries} setTotal={setTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} setCount={setCount} count={count} />
+      {
+        currentView === 'list' ? (
+          <ListLottery loading={loading} activeLotteries={activeLotteries} setTotal={setTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} setCount={setCount} count={count} />
+        ) : currentView === 'checkOut' ? (
+          <Checkout total={total} setTotal={setTotal} />
+        ) : (
+          <ListLottery loading={loading} activeLotteries={activeLotteries} setTotal={setTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} setCount={setCount} count={count} />
+        )
+      }
+      
       <section className="mt-4 py-5" id="payment-options">
         <div className="container py-5 text-center">
           <div className="row">
@@ -221,31 +215,7 @@ export default function MainPage({ setUserLogged, userLogged }) {
           </div>
         </div>
       </section>
-      <footer className="py-3 mt-4">
-        <ul className="nav justify-content-center border-bottom pb-3 mb-3">
-          <li className="nav-item">
-            <a href="#" className="nav-link px-2 text-muted">
-              Home
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link px-2 text-muted">
-              Results
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link px-2 text-muted">
-              FAQs
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="#" className="nav-link px-2 text-muted">
-              Contact Us
-            </a>
-          </li>
-        </ul>
-        <p className="text-center text-muted">© 2023 THEMLJ Company, Inc</p>
-      </footer>
+      <Footer/>
       {/* <div className="container-fluid d-flex justify-content-center">
           <div className="row">
             {

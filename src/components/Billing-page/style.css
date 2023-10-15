@@ -10,4 +10,15 @@
 
 .cart-item{
   border-bottom: 1px solid #000;
+  /* padding: 1rem;
+  background: #fff; */
+}
+
+.checkout-container{
+  margin-top: 6rem;
+  min-height: 67vh;
+}
+
+.transparent-text{
+  color: transparent;
 }

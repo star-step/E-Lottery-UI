@@ -8,7 +8,7 @@ export default function ListLottery({ loading, activeLotteries, setTotal, total,
       <section className="" id="jackpot-section">
         <h1 className="text-center primary-text-color">Current Jackpot</h1>
         <div className="d-flex justify-content-center">
-          <div className="container row mt-4">
+          <div className="container lottery-container row mt-3">
             {loading ? (
               <div className="loader-div">
                 <span className="loader">
@@ -19,7 +19,7 @@ export default function ListLottery({ loading, activeLotteries, setTotal, total,
             ) : (
               activeLotteries.map((lottery, i) => {
                 return (
-                  <div className="col-md-4 px-4" key={i}>
+                  <div className="col-xl-4 px-4" key={i}>
                     <LotteryView
                       lotteryState={lottery.state}
                       index={i}

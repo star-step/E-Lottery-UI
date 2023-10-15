@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import ShortUniqueId from "https://esm.sh/short-unique-id";
 import Timer from "../Timer";
 import "./style.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function LotteryView({
   lotteryState,
@@ -15,6 +17,12 @@ export default function LotteryView({
   // Random UUID
   const [count, setCount] = useState(0);
   const [selectedQuantity, setSelectedQuantity] = useState(0);
+  const toastProperties = {
+    position: "top-right",
+    closeOnClick: true,
+    autoClose: 1500,
+    hideProgressBar:true
+  }
   let limit = 2
   let cardColor;
   let color = "#0D7D7D";
@@ -45,31 +53,47 @@ export default function LotteryView({
   }, [lotteryInit]);
 
   const generateTicket = () => {
-    const uid = new ShortUniqueId();
-    let ticket = {
-      lottery_id: lottery._id,
-      ticket: uid(),
-      user_id: localStorage.getItem("user_id"),
-      price: lottery.price,
-    };
-    setLotteryInit([...lotteryInit, ticket]);
+    if(lotteryState == 'Active'){
+      const uid = new ShortUniqueId();
+      let ticket = {
+        lottery_id: lottery._id,
+        ticket: uid().toUpperCase(),
+        user_id: localStorage.getItem("user_id"),
+        price: lottery.price,
+      };
+      console.log(ticket);
+      setLotteryInit([...lotteryInit, ticket]);
+      toast('Ticket Allocated', toastProperties)
+    }else{
+      toast('Sorry, action not allowed', toastProperties)
+    }
     // setTickets([...tickets, ticket])
-    // console.log(tickets);
   };
 
   const removeTicket = () => {
     for (let i = 0; i < lotteryInit.length; i++) {
       if (lotteryInit[i].lottery_id == lottery._id) {
         lotteryInit.splice(i, 1);
+        toast('Ticket Removed', toastProperties)
         break;
       }
     }
   };
 
-  return (
-    <div className="card mx-auto border-0">
-      {/* <img src="..." className="card-img-top" alt="..."> */}
+  const checkAvailableQuantity = () => {
+    console.log(lottery);
+  }
+  
+  useEffect(() => {
+    localStorage.setItem('total_payable', total)
+    checkAvailableQuantity()
+  }, [total])
+  
 
+  return (
+    <div className="card lottery-card mx-auto border-0">
+      {/* <img src="..." className="card-img-top" alt="..."> */}
+          <ToastContainer />
           <div
             className="modal fade"
             id={"staticBackdrop" + index}
@@ -83,7 +107,7 @@ export default function LotteryView({
               <div className="modal-content">
                 <div className="modal-header">
                   <h5 className="modal-title" id="staticBackdropLabel">
-                    Lottery Info
+                    
                   </h5>
                   <button
                     type="button"
@@ -125,38 +149,47 @@ export default function LotteryView({
                   </h5>
                   </div>
                   <div className="d-flex justify-content-center mt-sm-3">
-                  <button
-                    className="btn remove-btn btn-circle mx-3"
-                    onClick={() => {
-                      if (count >= 1) {
-                        setCount(count - 1);
+                    <button
+                      className="btn remove-btn btn-circle mx-3"
+                      onClick={() => {
+                        if (count >= 1) {
+                          setCount(count - 1);
+                        }
+                        if (total > 0) {
+                          setTotal(total - lottery.price);
+                          removeTicket();
+                        } else {
+                        }
+                      }}
+                      disabled={
+                        count === 0 || lotteryState != 'Active' ? true : false
                       }
-                      if (total > 0) {
-                        setTotal(total - lottery.price);
-                        removeTicket();
-                      } else {
+                    >
+                      <i className="fa-solid fa-minus"></i>
+                    </button>
+                    <button
+                      className="btn btn-primary add-btn btn-circle btn-xl mx-3"
+                      onClick={() => {
+                        setCount(count + 1);
+                        setTotal(parseInt(total) + parseInt(lottery.price));
+                        generateTicket();
+                      }}
+                      disabled={
+                        count >= limit || lotteryState != 'Active'  ? true : false
                       }
-                    }}
-                    disabled={
-                      count === 0 ? true : false
-                    }
-                  >
-                    <i className="fa-solid fa-minus"></i>
-                  </button>
-                  <button
-                    className="btn btn-primary add-btn btn-circle btn-xl mx-3"
-                    onClick={() => {
-                      setCount(count + 1);
-                      setTotal(parseInt(total) + parseInt(lottery.price));
-                      generateTicket();
-                    }}
-                    disabled={
-                      count >= limit ? true : false
-                    }
-                  >
-                    <i className="fa-solid fa-plus"></i>
-                  </button>
+                    >
+                      <i className="fa-solid fa-plus"></i>
+                    </button> 
                   </div>
+                  <p className="text-danger text-center mt-3">
+                  {lotteryState === "Active"
+                      ? ""
+                      : lotteryState === "Completed"
+                      ? "*Entries are closed"
+                      : lotteryState === "Stage"
+                      ? "*Entries yet to start"
+                      : "NAN"}
+                  </p>
                 </div>
                 <div className="modal-footer">
                   <button

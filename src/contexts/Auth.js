@@ -93,7 +93,6 @@ export function AuthProvider({ children }) {
       }
     })
     .then(function (data) {
-      console.log(data);
       localStorage.setItem("token", data.token);
       localStorage.setItem("tickets_bought", data.ticketsBought)
       // getAllUsers(data.loggedUser);
@@ -104,7 +103,6 @@ export function AuthProvider({ children }) {
 
   function storeProfileInfo(url, user, redirect) {
     localStorage.setItem("currentUser", JSON.stringify(user));
-    console.log(localStorage.getItem("currentUser"));
     if (redirect) {
       window.location.href = url;
     } else {
@@ -132,7 +130,9 @@ export function AuthProvider({ children }) {
   const saveBoughtTickets = async () => {
     // setLoad(true)
     let ticketsBought = JSON.parse(localStorage.getItem('ticketsOpted'))
+    let userId = localStorage.getItem('user_id')
     for(let i = 0; i < ticketsBought.length; i++){
+      ticketsBought[i].user_id = userId
       fetch(apiUrl + "lottery/addTicketToUserNLottery", {
         method: "post",
         body: JSON.stringify(ticketsBought[i]),
@@ -150,17 +150,46 @@ export function AuthProvider({ children }) {
           }
         })
         .then(function (data) {
-          console.log(data);
+          localStorage.setItem('ticketsOpted', null)
+          localStorage.setItem("checkingOut", null)
+          localStorage.setItem("total_payable", 0)
           // getAllUsers(data.loggedUser);
           // storeProfileInfo("./chat", data.loggedUser, true);
         })
         .catch(function (json) {});
     }
     // localStorage.setItem('savingTickets', false)
-    localStorage.setItem("checkingOut", null)
     // setLoad(false)
   };
 
+  const getBoughtTickets = () => {
+    let id = localStorage.getItem("user_id")
+    let userId = {
+      user_id : id
+    }
+    return fetch(apiUrl + "user/getBoughtTickets", {
+      method: "POST",
+      body: JSON.stringify(userId),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          return response.json().then((json) => {
+            throw new Error(json.message);
+          });
+        }
+      })
+      .then(function (data) {
+        localStorage.setItem("lotteries_bought", JSON.stringify(data));
+        // setTicketsBought(data)
+      })
+      .catch(function (json) {
+        });
+  }
   // function updateEmail(email) {
   //   return currentUser.updateEmail(email);
   // }
@@ -186,7 +215,8 @@ export function AuthProvider({ children }) {
     checkLoggedIn,
     storeProfileInfo,
     loginAdmin,
-    saveBoughtTickets
+    saveBoughtTickets,
+    getBoughtTickets
   };
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;

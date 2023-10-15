@@ -32,7 +32,6 @@ export default function Timer({ endtime, color }) {
         setHours(hours);
         setMinutes(minutes);
         setSeconds(seconds);
-        // console.log("Time until new year:\nDays: " + days + " Hours: " + hours + " Minutes: " + minutes + " Seconds: " + seconds);
       }, 1000);
     }
   };
