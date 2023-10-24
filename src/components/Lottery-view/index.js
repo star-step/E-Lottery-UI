@@ -4,6 +4,8 @@ import Timer from "../Timer";
 import "./style.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 export default function LotteryView({
   lotteryState,
@@ -35,7 +37,7 @@ export default function LotteryView({
     backgroundColor: color,
   };
   const getSelectedQuantity = () => {
-    let lotterySelected = JSON.parse(localStorage.getItem("ticketsOpted"));
+    let lotterySelected = JSON.parse(cookies.get("ticketsOpted"));
     let selectedCount = 0;
     if (lotterySelected == null) {
       return;
@@ -58,7 +60,7 @@ export default function LotteryView({
       let ticket = {
         lottery_id: lottery._id,
         ticket: uid().toUpperCase(),
-        user_id: localStorage.getItem("user_id"),
+        user_id: cookies.get("user_id"),
         price: lottery.price,
       };
       console.log(ticket);
@@ -85,7 +87,7 @@ export default function LotteryView({
   }
   
   useEffect(() => {
-    localStorage.setItem('total_payable', total)
+    cookies.set('total_payable', total)
     checkAvailableQuantity()
   }, [total])
   

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 export default function Register({setUserLogged, userLogged}) {
 
@@ -30,7 +32,7 @@ export default function Register({setUserLogged, userLogged}) {
         passwordRef.current.value,
       );
       setUserLogged(true)
-      if(JSON.parse(localStorage.getItem("checkingOut"))){
+      if(JSON.parse(cookies.get("checkingOut"))){
         navigate("/payment");
       }else{
         navigate("/main")

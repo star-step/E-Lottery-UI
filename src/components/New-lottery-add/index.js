@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { useNavigate } from "react-router-dom";
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 const apiUrl = "http://localhost:5000/";
 export default function AddLottery() {
@@ -40,8 +42,8 @@ export default function AddLottery() {
       }
     })
     .then(function (data) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("tickets_bought", JSON.stringify(data.ticketsBought))
+      cookies.set("token", data.token);
+      cookies.set("tickets_bought", JSON.stringify(data.ticketsBought))
       // getAllUsers(data.loggedUser);
       document.getElementById('closeModalButton').click()
       // storeProfileInfo("./chat", data.loggedUser, true);

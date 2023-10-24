@@ -17,10 +17,10 @@ function App() {
   const [userLogged, setUserLogged] = useState(false);
   const [adminLogged, setAdminLogged] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [total, setTotal] = useState(parseInt(localStorage.getItem('total_payable')));
+  const [total, setTotal] = useState(parseInt(cookies.get('total_payable')));
   const [currentView, setCurrentView] = useState('list');
   useEffect(() => {
-    if (localStorage.getItem("token") === 'null' || localStorage.getItem("token") === 'undefined') {
+    if (cookies.get("token") === 'null' || cookies.get("token") === 'undefined') {
       setUserLogged(false)
     } else {
       setUserLogged(true)

@@ -18,16 +18,16 @@ export default function MainPage({ setUserLogged, userLogged, total, setTotal, c
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [lotteryInit, setLotteryInit] = useState(
-    JSON.parse(localStorage.getItem("ticketsOpted"))
+    JSON.parse(cookies.get("ticketsOpted"))
   );
 
   if (!lotteryInit) {
     setLotteryInit([]);
   }
-  let activeLotteries = JSON.parse(localStorage.getItem("active_lotteries"));
-  localStorage.setItem("ticketsOpted", JSON.stringify(lotteryInit));
-  localStorage.setItem("checkingOut", false);
-  localStorage.setItem("lotteries_bought", null);
+  let activeLotteries = JSON.parse(cookies.get("active_lotteries"));
+  cookies.set("ticketsOpted", JSON.stringify(lotteryInit));
+  cookies.set("checkingOut", false);
+  cookies.set("lotteries_bought", null);
 
   const sortLotteries = (lotteries) => {
     let activeLotteries = [];
@@ -77,21 +77,21 @@ export default function MainPage({ setUserLogged, userLogged, total, setTotal, c
       })
       .then(function (data) {
         setLoading(false);
-        localStorage.setItem("active_lotteries", JSON.stringify(sortLotteries(data)));
+        cookies.set("active_lotteries", JSON.stringify(sortLotteries(data)));
       })
       .catch(function (json) {});
   };
 
   const logout = () => {
-    localStorage.setItem("token", null);
-    localStorage.setItem("user_id", null);
-    localStorage.setItem("tickets_bought", null);
-    localStorage.setItem("checkingOut", null);
+    cookies.set("token", null);
+    cookies.set("user_id", null);
+    cookies.set("tickets_bought", null);
+    cookies.set("checkingOut", null);
     setUserLogged(false);
   };
 
   const calcTotal = () => {
-    let lotterySelected = JSON.parse(localStorage.getItem("ticketsOpted"));
+    let lotterySelected = JSON.parse(cookies.get("ticketsOpted"));
     let totalSelectedPrice = 0;
     if (lotterySelected == null) {
       return;
@@ -100,11 +100,11 @@ export default function MainPage({ setUserLogged, userLogged, total, setTotal, c
       totalSelectedPrice += lotterySelected[i].price;
     }
     setTotal(totalSelectedPrice);
-    localStorage.setItem("total_payable", totalSelectedPrice)
+    cookies.set("total_payable", totalSelectedPrice)
   };
 
   const checkOut = async () => {
-    localStorage.setItem("checkingOut", true);
+    cookies.set("checkingOut", true);
     if (total !== 0) {
       if (userLogged) {
         setLoading(true);
@@ -139,7 +139,7 @@ export default function MainPage({ setUserLogged, userLogged, total, setTotal, c
 
 
   const resetSelected = () => {
-    localStorage.setItem("ticketsOpted", null);
+    cookies.set("ticketsOpted", null);
     setTotal(0);
     setLotteryInit([]);
   };

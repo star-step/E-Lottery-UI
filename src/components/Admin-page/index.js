@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { useNavigate } from "react-router-dom";
 import AddLottery from "../New-lottery-add/index"
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 export default function AdminPage({ setAdminLogged, adminLogged }) {
   let navigate = useNavigate();

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 const apiUrl = "http://localhost:5000/";
 export default function UserProfile({ setLoading }) {
   
-  const [ticketsBought, setTicketsBought] = useState(JSON.parse(localStorage.getItem("lotteries_bought")));
+  const [ticketsBought, setTicketsBought] = useState(JSON.parse(cookies.get("lotteries_bought")));
   const getBoughtTickets = () => {
-    let id = localStorage.getItem("user_id")
+    let id = cookies.get("user_id")
     let userId = {
       user_id : id
     }
@@ -26,7 +28,7 @@ export default function UserProfile({ setLoading }) {
         }
       })
       .then(function (data) {
-        localStorage.setItem("lotteries_bought", JSON.stringify(data));
+        cookies.set("lotteries_bought", JSON.stringify(data));
         setTicketsBought(data)
         setLoading(false)
       })

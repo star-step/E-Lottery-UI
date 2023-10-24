@@ -5,6 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from "../Footer";
 import "./style.css";
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 export default function Checkout({ total, setTotal, userLogged, setLoading
 }) {
@@ -20,7 +22,7 @@ export default function Checkout({ total, setTotal, userLogged, setLoading
   }
 
   const setBuyingLotteries = () => {
-    let lotteryArr = JSON.parse(localStorage.getItem('ticketsOpted'))
+    let lotteryArr = JSON.parse(cookies.get('ticketsOpted'))
     let formatedLotteries = []
     if(lotteryArr){
       for(let  i = 0; i < lotteryArr.length; i++){
@@ -59,7 +61,7 @@ export default function Checkout({ total, setTotal, userLogged, setLoading
   }
   
   const checkOut = async () => {
-    localStorage.setItem("checkingOut", true);
+    cookies.set("checkingOut", true);
     if (total !== 0) {
       if (userLogged) {
         setLoading(true);

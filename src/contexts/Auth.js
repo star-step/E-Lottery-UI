@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 const AuthContext = React.createContext();
 const apiUrl = "http://localhost:5000/";
@@ -31,9 +33,9 @@ export function AuthProvider({ children }) {
         }
       })
       .then(function (data) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("tickets_bought", JSON.stringify(data.ticketsBought))
-        localStorage.setItem("user_id", data.userId)
+        cookies.set("token", data.token);
+        cookies.set("tickets_bought", JSON.stringify(data.ticketsBought))
+        cookies.set("user_id", data.userId)
         // getAllUsers(data.loggedUser);
         // storeProfileInfo("./chat", data.loggedUser, true);
       })
@@ -62,8 +64,8 @@ export function AuthProvider({ children }) {
         }
       })
       .then(function (data) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("tickets_bought", data.ticketsBought)
+        cookies.set("token", data.token);
+        cookies.set("tickets_bought", data.ticketsBought)
         // getAllUsers(data.loggedUser);
         // storeProfileInfo("./chat", data.loggedUser, true);
       })
@@ -93,8 +95,8 @@ export function AuthProvider({ children }) {
       }
     })
     .then(function (data) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("tickets_bought", data.ticketsBought)
+      cookies.set("token", data.token);
+      cookies.set("tickets_bought", data.ticketsBought)
       // getAllUsers(data.loggedUser);
       // storeProfileInfo("./chat", data.loggedUser, true);
     })
@@ -102,7 +104,7 @@ export function AuthProvider({ children }) {
   }
 
   function storeProfileInfo(url, user, redirect) {
-    localStorage.setItem("currentUser", JSON.stringify(user));
+    cookies.set("currentUser", JSON.stringify(user));
     if (redirect) {
       window.location.href = url;
     } else {
@@ -110,7 +112,7 @@ export function AuthProvider({ children }) {
   }
 
   function checkLogin() {
-    if (localStorage.getItem("token") != null) {
+    if (cookies.get("token") != null) {
       return true;
     } else {
       return false;
@@ -124,13 +126,13 @@ export function AuthProvider({ children }) {
   }
 
   function logout() {
-    return localStorage.clear();
+    return cookies.clear();
   }
   
   const saveBoughtTickets = async () => {
     // setLoad(true)
-    let ticketsBought = JSON.parse(localStorage.getItem('ticketsOpted'))
-    let userId = localStorage.getItem('user_id')
+    let ticketsBought = JSON.parse(cookies.get('ticketsOpted'))
+    let userId = cookies.get('user_id')
     for(let i = 0; i < ticketsBought.length; i++){
       ticketsBought[i].user_id = userId
       fetch(apiUrl + "lottery/addTicketToUserNLottery", {
@@ -150,20 +152,20 @@ export function AuthProvider({ children }) {
           }
         })
         .then(function (data) {
-          localStorage.setItem('ticketsOpted', null)
-          localStorage.setItem("checkingOut", null)
-          localStorage.setItem("total_payable", 0)
+          cookies.set('ticketsOpted', null)
+          cookies.set("checkingOut", null)
+          cookies.set("total_payable", 0)
           // getAllUsers(data.loggedUser);
           // storeProfileInfo("./chat", data.loggedUser, true);
         })
         .catch(function (json) {});
     }
-    // localStorage.setItem('savingTickets', false)
+    // cookies.set('savingTickets', false)
     // setLoad(false)
   };
 
   const getBoughtTickets = () => {
-    let id = localStorage.getItem("user_id")
+    let id = cookies.get("user_id")
     let userId = {
       user_id : id
     }
@@ -184,7 +186,7 @@ export function AuthProvider({ children }) {
         }
       })
       .then(function (data) {
-        localStorage.setItem("lotteries_bought", JSON.stringify(data));
+        cookies.set("lotteries_bought", JSON.stringify(data));
         // setTicketsBought(data)
       })
       .catch(function (json) {
@@ -199,9 +201,9 @@ export function AuthProvider({ children }) {
   // }
 
   useEffect(() => {
-    setCurrentUser(localStorage.getItem("currentUser"));
+    setCurrentUser(cookies.get("currentUser"));
     setLoading(false);
-  }, [localStorage.getItem("currentUser")]);
+  }, [cookies.get("currentUser")]);
 
   const value = {
     currentUser,
