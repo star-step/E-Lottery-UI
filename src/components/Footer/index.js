@@ -28,7 +28,7 @@ export default function Footer({  }) {
             </a>
           </li>
         </ul>
-        <p className="text-center text-muted">© 2023 THEMLJ Company, Inc</p>
+        <p className="text-center text-muted">© 2023 THE MLJ Company, Inc</p>
       </footer>
     </>
   );

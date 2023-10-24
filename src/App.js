@@ -10,6 +10,8 @@ import Checkout from "./components/Billing-page";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./contexts/Auth";
 import './App.css';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 function App() {
   const [userLogged, setUserLogged] = useState(false);
@@ -41,7 +43,7 @@ function App() {
               </div>
             ) : (
               <>
-              <Navbar userLogged={userLogged} setUserLogged={setUserLogged} total={total}/>
+              <Navbar userLogged={userLogged} setUserLogged={setUserLogged} total={total} adminLogged={adminLogged} setAdminLogged={setAdminLogged} />
               <AuthProvider>
                 <Routes>
                   <Route path="/" element={<MainPage setUserLogged={setUserLogged} userLogged={userLogged} total={total} setTotal={setTotal} currentView={currentView} />}  />

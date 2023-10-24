@@ -82,7 +82,7 @@ export default function AdminLogin({ setAdminLogged, adminLogged }) {
   }, []);
 
   return (
-    <div className="container d-flex justify-content-center">
+    <div className="container d-flex justify-content-center mt-5">
       <a href="main">Main Page</a>
       <form className="col-4">
         {error && <div className="alert alert-danger">{error}</div>}

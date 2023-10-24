@@ -7,14 +7,19 @@ import "./style.css"
 import logo from '../../assets/images/to-be-logo.svg';
 const cookies = new Cookies();
 const apiUrl = "http://localhost:5000/";
-export default function Navbar({setUserLogged, userLogged, total, currentView, updateLink }) {
+export default function Navbar({setUserLogged, userLogged, total, currentView, updateLink, adminLogged, setAdminLogged }) {
   let navigate = useNavigate(); 
   const logout = () => {
-    localStorage.setItem("token", null)
-    localStorage.setItem("user_id", null)
-    localStorage.setItem("tickets_bought", null)
-    localStorage.setItem("checkingOut", null)
+    cookies.set("token", null)
+    cookies.set("user_id", null)
+    cookies.set("tickets_bought", null)
+    cookies.set("checkingOut", null)
+    // localStorage.setItem("token", null)
+    // localStorage.setItem("user_id", null)
+    // localStorage.setItem("tickets_bought", null)
+    // localStorage.setItem("checkingOut", null)
     setUserLogged(false)
+    navigate("/main")
   };
   
   return (
@@ -53,6 +58,18 @@ export default function Navbar({setUserLogged, userLogged, total, currentView, u
                     <a className="nav-link" href="/login">Logout</a>
                   </li> */}
                 </>
+                ) : adminLogged ? (
+                  <>
+                    <li className="nav-item mx-2">
+                      <a className="nav-link" href="/results">Results</a>
+                    </li>
+                    <li className="nav-item mx-2">
+                      <a className="nav-link" href="/main">Active Lotteries</a>
+                    </li>
+                    <li className="nav-item mx-2">
+                      <a className="dropdown-item" onClick={logout}>Logout</a>
+                    </li>
+                  </>
                 ) : (
                 <li className="nav-item mx-2">
                   <a className="nav-link" href="/login">Login/Register</a>

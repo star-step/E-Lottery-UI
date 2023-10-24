@@ -13,7 +13,7 @@ export default function AdminPage({ setAdminLogged, adminLogged }) {
   };
 
   return (
-    <div className="container d-flex justify-content-center">
+    <div className="container d-flex justify-content-center mt-5">
       {adminLogged ? (
         <>
           <h1>Admin panel</h1>
@@ -70,7 +70,7 @@ export default function AdminPage({ setAdminLogged, adminLogged }) {
           <h1>
             <a href="/main">Home Page</a>
           </h1>
-          <p onClick={logout}>Logout</p>
+          <p className="mt-5" onClick={logout}>Logout</p>
         </>
       ) : (
         <h1>Forbidden 404</h1>
