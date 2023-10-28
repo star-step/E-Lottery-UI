@@ -5,7 +5,7 @@ import "./style.css";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
-export default function Register({setUserLogged, userLogged}) {
+export default function Register({ setCheckingOut, checkingOut, setUserLogged, userLogged}) {
 
   const nameRef = useRef();
   const emailRef = useRef();
@@ -32,7 +32,7 @@ export default function Register({setUserLogged, userLogged}) {
         passwordRef.current.value,
       );
       setUserLogged(true)
-      if(JSON.parse(cookies.get("checkingOut"))){
+      if(checkingOut){
         navigate("/payment");
       }else{
         navigate("/main")

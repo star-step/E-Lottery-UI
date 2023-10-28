@@ -8,12 +8,14 @@ import "./style.css";
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
-export default function Checkout({ total, setTotal, userLogged, setLoading
+export default function Checkout({ setCheckingOut, checkingOut, total, setTotal, userLogged, setLoading, setLotteryInit,
+  lotteryInit,
 }) {
   let navigate = useNavigate(); 
   const { saveBoughtTickets } = useAuth();
   const [selectedLotteries, setSelectedLotteries] = useState([]);
 
+  console.log(lotteryInit);
   const toastProperties = {
     position: "top-right",
     closeOnClick: true,
@@ -22,7 +24,8 @@ export default function Checkout({ total, setTotal, userLogged, setLoading
   }
 
   const setBuyingLotteries = () => {
-    let lotteryArr = JSON.parse(cookies.get('ticketsOpted'))
+    // let lotteryArr = JSON.parse(cookies.get('ticketsOpted'))
+    let lotteryArr = lotteryInit;
     let formatedLotteries = []
     if(lotteryArr){
       for(let  i = 0; i < lotteryArr.length; i++){
@@ -61,12 +64,15 @@ export default function Checkout({ total, setTotal, userLogged, setLoading
   }
   
   const checkOut = async () => {
-    cookies.set("checkingOut", true);
+    // cookies.set("checkingOut", true);
+    setCheckingOut(true)
     if (total !== 0) {
       if (userLogged) {
         setLoading(true);
         //proceed to checkout
         await saveBoughtTickets();
+        setCheckingOut(false)
+        setTotal(0)
         // setLoading(false)
         setLoading(false)
       } else {

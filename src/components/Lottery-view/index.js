@@ -37,7 +37,8 @@ export default function LotteryView({
     backgroundColor: color,
   };
   const getSelectedQuantity = () => {
-    let lotterySelected = JSON.parse(cookies.get("ticketsOpted"));
+    // let lotterySelected = cookies.get("ticketsOpted");
+    let lotterySelected = lotteryInit;
     let selectedCount = 0;
     if (lotterySelected == null) {
       return;
@@ -87,7 +88,8 @@ export default function LotteryView({
   }
   
   useEffect(() => {
-    cookies.set('total_payable', total)
+    // cookies.set('total_payable', total)
+    // setTotal(total)
     checkAvailableQuantity()
   }, [total])
   

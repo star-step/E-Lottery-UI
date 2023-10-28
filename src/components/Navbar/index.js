@@ -7,20 +7,21 @@ import "./style.css"
 import logo from '../../assets/images/to-be-logo.svg';
 const cookies = new Cookies();
 const apiUrl = "http://localhost:5000/";
-export default function Navbar({setUserLogged, userLogged, total, currentView, updateLink, adminLogged, setAdminLogged }) {
+
+export default function Navbar({ setCheckingOut, checkingOut, setUserLogged, userLogged, total, currentView, updateLink, adminLogged, setAdminLogged }) {
   let navigate = useNavigate(); 
   const logout = () => {
     cookies.set("token", null)
     cookies.set("user_id", null)
     cookies.set("tickets_bought", null)
-    cookies.set("checkingOut", null)
-    // localStorage.setItem("token", null)
-    // localStorage.setItem("user_id", null)
-    // localStorage.setItem("tickets_bought", null)
-    // localStorage.setItem("checkingOut", null)
+    setCheckingOut(false)
     setUserLogged(false)
     navigate("/main")
   };
+
+  const redirect = (path) => {
+    navigate(path)
+  }
   
   return (
     <>
@@ -35,10 +36,10 @@ export default function Navbar({setUserLogged, userLogged, total, currentView, u
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
               <li className="nav-item mx-2">
-                <a className={"nav-link" + (currentView == "list" ? " active": "")} href="/" >Home</a>
+                <a className={"nav-link" + (currentView == "list" ? " active": "")} onClick={redirect('/')}>Home</a>
               </li>
               <li className="nav-item mx-2">
-                <a className="nav-link" href="#">Results</a>
+                <a className="nav-link">Results</a>
               </li>
               {userLogged ? (
                 <>
@@ -47,7 +48,7 @@ export default function Navbar({setUserLogged, userLogged, total, currentView, u
                       User
                     </a>
                     <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <li><a className="dropdown-item" href="/profile">View Tickets Bought</a></li>
+                      <li><a className="dropdown-item" onClick={redirect('/profile')}>View Tickets Bought</a></li>
                       <li><a className="dropdown-item" onClick={logout}>Logout</a></li>
                     </ul>
                   </li>
@@ -61,10 +62,10 @@ export default function Navbar({setUserLogged, userLogged, total, currentView, u
                 ) : adminLogged ? (
                   <>
                     <li className="nav-item mx-2">
-                      <a className="nav-link" href="/results">Results</a>
+                      <a className="nav-link" onClick={redirect('/results')}>Results</a>
                     </li>
                     <li className="nav-item mx-2">
-                      <a className="nav-link" href="/main">Active Lotteries</a>
+                      <a className="nav-link" onClick={redirect('/main')}>Active Lotteries</a>
                     </li>
                     <li className="nav-item mx-2">
                       <a className="dropdown-item" onClick={logout}>Logout</a>
@@ -72,12 +73,12 @@ export default function Navbar({setUserLogged, userLogged, total, currentView, u
                   </>
                 ) : (
                 <li className="nav-item mx-2">
-                  <a className="nav-link" href="/login">Login/Register</a>
+                  <a className="nav-link" onClick={redirect('/login')}>Login/Register</a>
                 </li>
               )
               }
               <li className="nav-item mx-2">
-                <a className={"nav-link" + (currentView == "checkOut" ? " active": "")} href="/checkout"><i className="fa-sharp fa-solid fa-cart-shopping"></i> : &#8377;{total}</a>
+                <a className={"nav-link" + (currentView == "checkOut" ? " active": "")} onClick={redirect('/checkout')}><i className="fa-sharp fa-solid fa-cart-shopping"></i> : &#8377;{total}</a>
               </li>
             </ul>
           </div>

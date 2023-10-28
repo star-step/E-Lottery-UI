@@ -152,9 +152,9 @@ export function AuthProvider({ children }) {
           }
         })
         .then(function (data) {
-          cookies.set('ticketsOpted', null)
-          cookies.set("checkingOut", null)
-          cookies.set("total_payable", 0)
+          // cookies.set('ticketsOpted', null)
+          // cookies.set("checkingOut", null)
+          // cookies.set("total_payable", 0)
           // getAllUsers(data.loggedUser);
           // storeProfileInfo("./chat", data.loggedUser, true);
         })

@@ -17,8 +17,10 @@ function App() {
   const [userLogged, setUserLogged] = useState(false);
   const [adminLogged, setAdminLogged] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [total, setTotal] = useState(parseInt(cookies.get('total_payable')));
+  const [total, setTotal] = useState(0);
   const [currentView, setCurrentView] = useState('list');
+  const [checkingOut, setCheckingOut] = useState(false);
+  const [lotteryInit, setLotteryInit] = useState([]);
   useEffect(() => {
     if (cookies.get("token") === 'null' || cookies.get("token") === 'undefined') {
       setUserLogged(false)
@@ -43,17 +45,25 @@ function App() {
               </div>
             ) : (
               <>
-              <Navbar userLogged={userLogged} setUserLogged={setUserLogged} total={total} adminLogged={adminLogged} setAdminLogged={setAdminLogged} />
+              <Navbar setCheckingOut={setCheckingOut} checkingOut={checkingOut} userLogged={userLogged} setUserLogged={setUserLogged} total={total} adminLogged={adminLogged} setAdminLogged={setAdminLogged} />
               <AuthProvider>
                 <Routes>
-                  <Route path="/" element={<MainPage setUserLogged={setUserLogged} userLogged={userLogged} total={total} setTotal={setTotal} currentView={currentView} />}  />
-                  <Route path="/main" element={<MainPage setUserLogged={setUserLogged} userLogged={userLogged} total={total} setTotal={setTotal} currentView={currentView}   />} />
-                  <Route path="/login" element={<Login setUserLogged={setUserLogged} userLogged={userLogged} />}/>
-                  <Route path="/register" element={<Register setUserLogged={setUserLogged} userLogged={userLogged} />}/>
+                  <Route path="/" element={<MainPage setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} setCheckingOut={setCheckingOut} checkingOut={checkingOut} setUserLogged={setUserLogged} userLogged={userLogged} total={total} setTotal={setTotal} currentView={currentView} />}  />
+
+                  <Route path="/main" element={<MainPage setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} setCheckingOut={setCheckingOut} checkingOut={checkingOut} setUserLogged={setUserLogged} userLogged={userLogged} total={total} setTotal={setTotal} currentView={currentView}   />} />
+
+                  <Route path="/login" element={<Login setCheckingOut={setCheckingOut} checkingOut={checkingOut} setUserLogged={setUserLogged} userLogged={userLogged} />}/>
+
+                  <Route path="/register" element={<Register setCheckingOut={setCheckingOut} checkingOut={checkingOut} setUserLogged={setUserLogged} userLogged={userLogged} />}/>
+
                   <Route path="/admin-pnlog" element={<AdminLogin setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
+
                   <Route path="/admin-pn" element={<AdminPage setAdminLogged={setAdminLogged} adminLogged={adminLogged} />} />
+
                   <Route path="/profile" element={<UserProfile setUserLogged={setUserLogged} userLogged={userLogged} setLoading={setLoading} />} />
-                  <Route path="/checkout" element={<Checkout total={total} setTotal={setTotal} userLogged={userLogged} setLoading={setLoading} />} />
+
+                  <Route path="/checkout" element={<Checkout setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} setCheckingOut={setCheckingOut} checkingOut={checkingOut}  total={total} setTotal={setTotal} userLogged={userLogged} setLoading={setLoading} />} />
+                  
                 </Routes>
               </AuthProvider>
               </>

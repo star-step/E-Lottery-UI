@@ -5,7 +5,7 @@ import "./style.css";
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
-export default function Login({setUserLogged, userLogged}) {
+export default function Login({ setCheckingOut, checkingOut, setUserLogged, userLogged}) {
 
   let navigate = useNavigate(); 
   const emailRef = useRef();
@@ -14,7 +14,7 @@ export default function Login({setUserLogged, userLogged}) {
   const { loginUser, checkLoggedIn } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  console.log(checkingOut);
   const handleSubmit = async (e) => {
     e && e.preventDefault();
     setError("");
@@ -35,10 +35,10 @@ export default function Login({setUserLogged, userLogged}) {
       setLoading(true);
       await loginUser(email, password);
       setUserLogged(true)
-      if(JSON.parse(cookies.get("checkingOut"))){
-        navigate("/payment");
-      }else{
+      if(!checkingOut){
         navigate("/main")
+      }else{
+        navigate("/payment");
       }
     } catch {
       setError("Failed to log in");

@@ -12,25 +12,24 @@ import upi from "../../assets/images/UPI.svg";
 const cookies = new Cookies();
 const apiUrl = "http://localhost:5000/";
 
-export default function MainPage({ setUserLogged, userLogged, total, setTotal, currentView }) {
+export default function MainPage({ lotteryInit, setLotteryInit, setCheckingOut, checkingOut, setUserLogged, userLogged, total, setTotal, currentView }) {
   let navigate = useNavigate();
+  // let allLotteries = []
   const { saveBoughtTickets, getBoughtTickets } = useAuth();
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
-  const [lotteryInit, setLotteryInit] = useState(
-    JSON.parse(cookies.get("ticketsOpted"))
-  );
-
+  const [activeLotteries, setAllLotteries] = useState([]);
+  // const [ticketsOpted, setTicketsOpted] = useState([]);
   if (!lotteryInit) {
     setLotteryInit([]);
   }
-  let activeLotteries = JSON.parse(cookies.get("active_lotteries"));
-  cookies.set("ticketsOpted", JSON.stringify(lotteryInit));
-  cookies.set("checkingOut", false);
+  // let activeLotteries = [];
+  // cookies.set("ticketsOpted", JSON.stringify(lotteryInit));
+  // cookies.set("checkingOut", false);
   cookies.set("lotteries_bought", null);
 
   const sortLotteries = (lotteries) => {
-    let activeLotteries = [];
+    let allActiveLotteries = [];
     let completedLotteries = [];
     let stagedLotteries = [];
     for (let i = 0; i < lotteries.length; i++) {
@@ -42,7 +41,7 @@ export default function MainPage({ setUserLogged, userLogged, total, setTotal, c
       ) {
         //show timeleft
         lotteries[i].state = 'Active'
-        activeLotteries.push(lotteries[i]);
+        allActiveLotteries.push(lotteries[i]);
       } else if (Date.parse(lottery.EndTime) <= date_now) {
         //show entries closed
         lotteries[i].state = 'Completed'
@@ -53,13 +52,13 @@ export default function MainPage({ setUserLogged, userLogged, total, setTotal, c
         stagedLotteries.push(lotteries[i]);
       }
     }
-    activeLotteries.sort(function(a,b){
+    allActiveLotteries.sort(function(a,b){
       return b.EndTime - a.EndTime
     });
-    return activeLotteries.concat(stagedLotteries, completedLotteries)
+    return allActiveLotteries.concat(stagedLotteries, completedLotteries)
   };
 
-  const getLotteries = () => {
+  const getLotteries = async () => {
     return fetch(apiUrl + "lottery/activeLotteries", {
       method: "POST",
       headers: {
@@ -76,22 +75,32 @@ export default function MainPage({ setUserLogged, userLogged, total, setTotal, c
         }
       })
       .then(function (data) {
-        setLoading(false);
-        cookies.set("active_lotteries", JSON.stringify(sortLotteries(data)));
+        setAllLotteries(sortLotteries(data))
+        // activeLotteries = sortLotteries(data)
+        // cookies.set("active_lotteries", JSON.stringify(sortLotteries(data)));
+        return data
       })
       .catch(function (json) {});
   };
+  
+  useEffect(() => {
+    if(activeLotteries.length != 0){
+      setLoading(false);
+    }
+  }, [activeLotteries])
 
   const logout = () => {
     cookies.set("token", null);
     cookies.set("user_id", null);
     cookies.set("tickets_bought", null);
-    cookies.set("checkingOut", null);
+    // cookies.set("checkingOut", null);
+    setCheckingOut(false);
     setUserLogged(false);
   };
 
   const calcTotal = () => {
-    let lotterySelected = JSON.parse(cookies.get("ticketsOpted"));
+    // let lotterySelected = cookies.get("ticketsOpted");
+    let lotterySelected = lotteryInit;
     let totalSelectedPrice = 0;
     if (lotterySelected == null) {
       return;
@@ -100,16 +109,20 @@ export default function MainPage({ setUserLogged, userLogged, total, setTotal, c
       totalSelectedPrice += lotterySelected[i].price;
     }
     setTotal(totalSelectedPrice);
-    cookies.set("total_payable", totalSelectedPrice)
+    // cookies.set("total_payable", totalSelectedPrice)
   };
 
   const checkOut = async () => {
-    cookies.set("checkingOut", true);
+    // cookies.set("checkingOut", true);
+    setCheckingOut(true)
     if (total !== 0) {
       if (userLogged) {
         setLoading(true);
         //proceed to checkout
         await saveBoughtTickets();
+        setLotteryInit([])
+        setCheckingOut(false)
+        setTotal(0)
         // setLoading(false)
       } else {
         //redirect to login page
@@ -139,7 +152,8 @@ export default function MainPage({ setUserLogged, userLogged, total, setTotal, c
 
 
   const resetSelected = () => {
-    cookies.set("ticketsOpted", null);
+    // cookies.set("ticketsOpted", null);
+    setLotteryInit([])
     setTotal(0);
     setLotteryInit([]);
   };
@@ -153,15 +167,22 @@ export default function MainPage({ setUserLogged, userLogged, total, setTotal, c
   },[]);
   return (
     <>
-      {
+      { !loading?
         currentView === 'list' ? (
           <ListLottery loading={loading} activeLotteries={activeLotteries} setTotal={setTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} setCount={setCount} count={count} />
         ) : currentView === 'checkOut' ? (
-          <Checkout total={total} setTotal={setTotal} />
+          <Checkout total={total} setTotal={setTotal} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} />
         ) : (
           <ListLottery loading={loading} activeLotteries={activeLotteries} setTotal={setTotal} total={total} setLotteryInit={setLotteryInit} lotteryInit={lotteryInit} setCount={setCount} count={count} />
         )
-      }
+      : (
+        <div className="loader-div">
+          <span className="loader">
+            <span></span>
+            <span></span>
+          </span>
+        </div>
+      )}
       
       <section className="mt-4 py-5" id="payment-options">
         <div className="container py-5 text-center">
